@@ -1,0 +1,178 @@
+
+const data = [
+    {
+        ID: 'XXXX',
+        Nombre: 'Jose Dominguez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$500'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Perla Lopez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$400'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Cristopher Rocha',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$350'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Victor Dominguez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$560'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Jose Dominguez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$500'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Perla Lopez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$400'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Cristopher Rocha',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$350'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Victor Dominguez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$560'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Jose Dominguez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$500'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Perla Lopez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$400'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Cristopher Rocha',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$350'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Victor Dominguez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$560'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Jose Dominguez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$500'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Perla Lopez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$400'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Cristopher Rocha',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$350'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Victor Dominguez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$560'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Jose Dominguez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$500'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Perla Lopez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$400'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Cristopher Rocha',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$350'
+    },
+    {
+        ID: 'XXXX',
+        Nombre: 'Victor Dominguez',
+        RFC: 'DJSFJDFGd',
+        CURP: 'DSGFD',
+        IMSS: '$299',
+        Real: '$560'
+    }
+]
+
+const titles = ['ID','Nombre','RFC','CURP','IMSS','Sueldo Real']
+
+const options = [
+    {
+        link: '/empleados/nuevo',
+        title: 'Nuevo Empleado'
+    },
+    {
+        link: '/nominas/nuevo',
+        title: 'Nueva Nómina'
+    }
+]
+
+export {data , titles, options}

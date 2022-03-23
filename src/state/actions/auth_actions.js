@@ -6,16 +6,31 @@ export const login = () => {
   return async (dispatch) => {
     try {
       console.log('auth...')
+      const resp = await Post('/prueba/auth');
+      const user = resp.data.data;
+
+      console.log(resp)
+
+      return user;
+
+    } catch (err) {
+      console.log(
+        err.message
+      );
+      return null;
+    }
+  };
+};
+
+export const prueba = () => {
+  return async (dispatch) => {
+    try {
+      console.log('auth...')
       const resp = await Post('/prueba/');
       const user = resp.data.data;
 
       console.log(resp)
 
-      if (!user) {
-        logout();
-        return null;
-      }
-      //await dispatch(InitUser(user));
       return user;
 
     } catch (err) {

@@ -7,11 +7,10 @@ export const login = () => {
     try {
       console.log('auth...')
       const resp = await Post('/prueba/auth');
-      const user = resp.data.data;
+      const data = resp.data;
 
-      console.log(resp)
-
-      return user;
+      console.log(data)
+      return data;
 
     } catch (err) {
       console.log(
@@ -25,13 +24,12 @@ export const login = () => {
 export const prueba = () => {
   return async (dispatch) => {
     try {
-      console.log('auth...')
+      console.log('probando...')
       const resp = await Post('/prueba/');
-      const user = resp.data.data;
+      const data = resp.data;
+      console.log(data)
 
-      console.log(resp)
-
-      return user;
+      return data;
 
     } catch (err) {
       console.log(

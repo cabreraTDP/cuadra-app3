@@ -1,17 +1,23 @@
 import axios from 'axios';
-const URL = "http//localhost:7799/"
+const URL = "https://cuadra-server-testing.herokuapp.com"
 
 export const Post = async (url, body = {}, options = { withCredentials: true }) => {
 
   const config = {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin':'*'},
     ...options,
   };
 
   const bodyStr = JSON.stringify(body);
 
   try {
-    const resp = await axios.Post(URL + url, bodyStr, config);
+    console.log(URL)
+    console.log(url)
+    console.log(URL+url)
+    const ruta = URL+url
+    const resp = await axios.get(ruta, bodyStr, config);
+
     return resp;
 
   } catch (err) {

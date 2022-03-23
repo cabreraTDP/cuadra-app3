@@ -5,7 +5,8 @@ import { Post, Get, CheckRespForErrors } from '../../utils/axiosUtils';
 export const login = () => {
   return async (dispatch) => {
     try {
-      const resp = await Post('/prueba/auth');
+      console.log('auth...')
+      const resp = await Post('/prueba/');
       const user = resp.data.data;
 
       console.log(resp)

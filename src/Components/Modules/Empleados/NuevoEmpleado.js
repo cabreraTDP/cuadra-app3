@@ -1,3 +1,4 @@
+import '../../../CSS/gridLayout.css'
 import FormDisplay from "../../FormDisplay"
 
 const datosInput = [
@@ -147,7 +148,7 @@ const NuevoEmpleado = () => {
                 </div>
                 <div >
                     <form className="grid-layout">
-                        <FormDisplay
+                        <FormDisplay id='id="formu"'
                             datosInput={datosInput}
                         />
                     </form>

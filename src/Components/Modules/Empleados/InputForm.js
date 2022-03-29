@@ -6,7 +6,11 @@ const InputForm = (props) => {
                     {props.etiqueta}
                 </label>
 
-                <input style={{ backgroundColor: '#f2ebc2', border:'solid black 0.5px', height: '25px', width:'90%' }}
+                <input style={{ backgroundColor: '#f2ebc2',
+    border:'solid black 0.5px',
+    height: '25px',
+    width:'90%'}}
+                
                     placeholder={props.placeholder}
                     type={props.tipo}
                 />

@@ -1,6 +1,5 @@
-import { AUTH_LOGIN, AUTH_LOGOUT } from './types';
-import { Post, Get, CheckRespForErrors } from '../../utils/axiosUtils';
-//import { InitUser } from './user_actions';
+import { AUTH_LOGOUT } from './types';
+import { Post } from '../../utils/axiosUtils';
 
 export const login = () => {
   return async (dispatch) => {

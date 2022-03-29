@@ -4,7 +4,6 @@ import NuevoEmpleado from "../Modules/Empleados/NuevoEmpleado";
 import Home from "../Modules/Home";
 import Nominas from "../Modules/Nominas/Nominas";
 import NuevoNomina from "../Modules/Nominas/NuevoNomina"
-import SignIn from "../SignIn"
 
 
 

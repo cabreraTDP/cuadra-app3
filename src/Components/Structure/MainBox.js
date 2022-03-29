@@ -4,6 +4,8 @@ import NuevoEmpleado from "../Modules/Empleados/NuevoEmpleado";
 import Home from "../Modules/Home";
 import Nominas from "../Modules/Nominas/Nominas";
 import NuevoNomina from "../Modules/Nominas/NuevoNomina"
+import SignIn from "../SignIn"
+
 
 
 const MainBox = () => {
@@ -13,9 +15,9 @@ const MainBox = () => {
             <Routes>
                 <Route index element={<Home />} />
                 <Route path="empleados" element={<Empleados />} />
-                    <Route path="empleados/nuevo" element={<NuevoEmpleado />} />
+                <Route path="empleados/nuevo" element={<NuevoEmpleado />} />
                 <Route path="nominas" element={<Nominas />} />
-                    <Route path="nominas/nuevo" element={<NuevoNomina />} />
+                <Route path="nominas/nuevo" element={<NuevoNomina />} />
                 <Route path="*" element={<Home />} />
             </Routes>
         </div>

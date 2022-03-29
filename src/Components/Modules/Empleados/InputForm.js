@@ -7,12 +7,14 @@ const InputForm = (props) => {
                 </label>
 
                 <input style={{ backgroundColor: '#f2ebc2',
-    border:'solid black 0.5px',
-    height: '25px',
-    width:'90%'}}
+                                border:'solid black 0.5px',
+                                height: '25px',
+                                width:'90%'}}
                 
                     placeholder={props.placeholder}
                     type={props.tipo}
+                    name={props.name}
+                    onChange={(e) => props.onChangeHandler(e)}
                 />
 
 

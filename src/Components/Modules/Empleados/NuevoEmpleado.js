@@ -1,116 +1,32 @@
 import '../../../CSS/gridLayout.css'
-import FormDisplay from "../../FormDisplay"
+import inputsEmpleado from "../../../Constants/inputsEmpleado"
+import InputForm from "./InputForm"
 
-const datosInput = [
-    {
-        etiqueta: "Nombre (s):",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Apellido Paterno",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Apellido Materno",
-        placeholder: "----",
-        tipo: "text"
-    }, {
-        etiqueta: "Telefono:",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Edad: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Genero",
-        placeholder: "----",
-        tipo: "text"
-    }, {
-        etiqueta: "Calle y No:",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Colonia: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Municipio: ",
-        placeholder: "----",
-        tipo: "text"
-    }, {
-        etiqueta: "Ciudad:",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Estado: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "C.P: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "CURP: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "RFC: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "NSS: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "ID Empleado: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Puesto: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Sueldo: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Banco: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "No de Cuenta: ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Clabe Interbancaria : ",
-        placeholder: "----",
-        tipo: "text"
-    },
-    {
-        etiqueta: "Fecha de ingreso: ",
-        placeholder: "----",
-        tipo: "date"
-    }
-]
+
+import { useState } from 'react'
+import { Post } from '../../../utils/axiosUtils'
+
 const NuevoEmpleado = () => {
+
+    const [datos, setDatos] = useState({})
+
+
+    const onSubmitHandler = async(e) => {
+        e.preventDefault();
+        console.log(datos);
+        console.log('submit');
+        const respuesta = await Post('/trabajadores/add', datos);
+        console.log(respuesta)
+    };
+
+    const onChangeHandler = async(e) => {
+        const {name, value} = e.target;
+        await setDatos({
+            ...datos,
+            [name]: value
+        });
+
+    };
 
     return (
 
@@ -147,10 +63,18 @@ const NuevoEmpleado = () => {
 
                 </div>
                 <div >
-                    <form className="grid-layout">
-                        <FormDisplay id='id="formu"'
-                            datosInput={datosInput}
-                        />
+                    <form className="grid-layout" onSubmit={onSubmitHandler}>
+                        {
+                            inputsEmpleado.map((input) =>
+                                < InputForm 
+                                    etiqueta={input.etiqueta}
+                                    placeholder={input.placeholder}
+                                    tipo={input.tipo}
+                                    name={input.name}
+                                    onChangeHandler={(e)=>onChangeHandler(e)}
+                                />
+                        )}
+                        <input type="submit" />
                     </form>
                 </div>
 

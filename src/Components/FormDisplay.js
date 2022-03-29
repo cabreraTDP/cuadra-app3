@@ -1,3 +1,4 @@
+import '../CSS/gridLayout.css'
 import InputForm from "./Modules/Empleados/InputForm"
 const FormDisplay = (props) => {
     const {datosInput}=props
@@ -6,7 +7,7 @@ const FormDisplay = (props) => {
         <>
             {
                 datosInput.map((input) =>
-                    < InputForm
+                    < InputForm 
                         etiqueta={input.etiqueta}
                         placeholder={input.placeholder}
                         tipo={input.tipo}

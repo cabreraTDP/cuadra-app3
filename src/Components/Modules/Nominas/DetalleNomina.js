@@ -1,14 +1,14 @@
 import '../../../CSS/nuevoNomina.css'
 import TableDisplay from "../../TableDisplay"
 
-import { titles, data, options } from '../../../dataNomina';
+import { titles, data, options } from '../../../dataDetalleNomina';
 
 const NuevoNomina = () => {
 
     return (
         <div>
-            <h1>Crear Nómina</h1>
-            <div style={{ marginLeft: '50px', marginRight: '50px' }}>
+            <h1>Detalle Nómina</h1>
+            <div style={{ marginLeft: '50px', marginRight: '50px', marginBottom:'30px' }}>
 
                 <div id="contenedorPrincipal">
                     <div id="informacion">
@@ -44,6 +44,18 @@ const NuevoNomina = () => {
                     <TableDisplay titles={titles} rawData={data} />
                 </div>
             </div>
+            <button type="button"
+                style={{
+                    float:'right',
+                    backgroundColor: '#dae6eb',
+                    border: '3px solid',
+                    borderColor: '#2400ff',
+                    color: '#8d8d99',
+                    height: '35px',
+                    width: '170px',
+                    borderRadius: '6px',
+                    fontSize: '20px',
+                }}>Crear</button>
         </div>
     )
 }

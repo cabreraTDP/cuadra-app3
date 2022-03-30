@@ -1,4 +1,3 @@
-import '../../../CSS/gridLayout.css'
 import FormDisplay from "../../FormDisplay"
 
 const datosInput = [

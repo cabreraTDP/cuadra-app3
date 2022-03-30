@@ -7,9 +7,25 @@ body{
 .contenedor{
     height: 49%;
     margin-top: 10%;
-    margin-left: 7%;
+    margin-left: 30%;
   }
   #principal{
     display: grid;
     grid-template-columns: auto auto;
+  }
+  #inputs{
+    display: grid;
+    grid-template-columns: auto;
+    width: 20%;
+  }
+  Input{ margin: 10px;
+    height: 30px;
+    width: 500px;
+    border: 0;
+    border-radius: 5px;
+  }
+  #a{
+    text-align: right;
+    text-decoration: underline;
+    font-size: 20px;
   }

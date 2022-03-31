@@ -5,17 +5,19 @@ import InputForm from "./InputForm"
 
 import { useState } from 'react'
 import { Post } from '../../../utils/axiosUtils'
+import {useNavigate} from 'react-router-dom'
 
 const NuevoEmpleado = () => {
 
     const [datos, setDatos] = useState({})
 
+    const navigate = useNavigate();
+
     const onSubmitHandler = async(e) => {
         e.preventDefault();
-        console.log(datos);
-        console.log('submit');
         const respuesta = await Post('/trabajadores/add', datos);
-        console.log(respuesta)
+        console.log(respuesta);
+        navigate('/app/empleados');
     };
 
     const onChangeHandler = async(e) => {
@@ -38,23 +40,7 @@ const NuevoEmpleado = () => {
                         <h3>Añadir Foto</h3>
                         </div>
                     </div>
-                    <div style={{ paddingTop: '80%' }}>
-                        <h3>
-                            (Nombres)
-                        </h3>
-                        <div>
-                            ID Empleado:
-                        </div>
-                        <div>
-                            ------
-                        </div>
-                        <div >
-                            Telefono
-                        </div>
-                        <div>
-                            ------
-                        </div>
-                    </div>
+                    
                     
 
                 </div>

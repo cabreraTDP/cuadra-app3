@@ -1,7 +1,5 @@
 import axios from 'axios';
-const URL = process.env.REACT_APP_URL_URI;
-
-
+const URL = REACT_APP_URL_URI
 
 export const Post = async (url, body = {}, options = { withCredentials: true }) => {
 
@@ -9,7 +7,6 @@ export const Post = async (url, body = {}, options = { withCredentials: true }) 
     headers: { 'Content-Type': 'application/json'},
     ...options
   };
-  console.log('A',process.env.REACT_APP_A)
   const bodyStr = JSON.stringify(body);
 
   try {

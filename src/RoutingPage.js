@@ -9,10 +9,8 @@ import NuevoEmpleado from "./Components/Modules/Empleados/NuevoEmpleado";
 import Home from "./Components/Modules/Home";
 import Nominas from "./Components/Modules/Nominas/Nominas";
 import NuevoNomina from "./Components/Modules/Nominas/NuevoNomina"
-import { Post } from './utils/axiosUtils';
-import { Fragment, useEffect, useState } from 'react';
-import store from './state/store';
-import { AUTH_LOGIN } from './state/actions/types';
+import { Fragment } from 'react';
+
 
 const RoutingPage = () => {
     //const [isLoggedIn, setIsLoggedIn] = useState(false)

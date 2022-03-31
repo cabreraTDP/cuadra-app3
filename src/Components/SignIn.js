@@ -1,14 +1,9 @@
-import axios from 'axios';
 import { useState } from 'react';
 import '../CSS/SignIn.css'
 import {useNavigate} from 'react-router-dom'
-import InputForm from './Modules/Empleados/InputForm'
 import store from '../state/store';
 import {login}  from '../state/actions/auth_actions'
-import { AUTH_LOGIN, AUTH_LOGOUT } from '../state/actions/types';
 import { Post } from '../utils/axiosUtils';
-
-const URL = "http://localhost:7799"
 
 
 const SignIn = () => {

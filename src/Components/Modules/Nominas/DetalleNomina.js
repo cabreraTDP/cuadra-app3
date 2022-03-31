@@ -1,7 +1,7 @@
 import '../../../CSS/nuevoNomina.css'
 import TableDisplay from "../../TableDisplay"
 
-import { titles, data, options } from '../../../dataDetalleNomina';
+import { titles, data } from '../../../dataDetalleNomina';
 
 const NuevoNomina = () => {
 

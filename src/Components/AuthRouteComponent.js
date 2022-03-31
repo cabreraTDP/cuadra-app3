@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Outlet, Navigate } from 'react-router';
-import store from '../state/store';
+
 import { Post } from '../utils/axiosUtils';
-import { AuthContext } from './AuthProvider';
+
 
 const AuthRouteComponent = ({children, ...propierties}) => {
 

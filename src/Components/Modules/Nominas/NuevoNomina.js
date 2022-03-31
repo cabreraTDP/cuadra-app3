@@ -1,6 +1,5 @@
 import '../../../CSS/nuevoNomina.css'
-import TableDisplay from "../../TableDisplay"
-import { titles, data, options } from '../../../dataNomina';
+import { titles } from '../../../dataNomina';
 import TableNominasNueva from './TableNominasNueva';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -8,8 +7,6 @@ import { Post } from '../../../utils/axiosUtils';
 import { useNavigate } from 'react-router';
 
 const NuevoNomina = () => {
-
-    const [empleados, setEmpleados] = useState([]);
     const [dataEmpleados, setDataEmpleados] = useState([{
         "Nombre": '',
         "Faltas": 0,
@@ -60,7 +57,7 @@ const NuevoNomina = () => {
 
     useEffect(async()=>{
         const trabajadores = await axios.get('http://localhost:7799/trabajadores', {withCredentials: true});
-        await setDataEmpleados(trabajadores.data.data.map((trabajador) => (
+        setDataEmpleados(trabajadores.data.data.map((trabajador) => (
             trabajador.datosPersonales ? {
                 "Nombre": trabajador.datosPersonales.nombre,
                 "Faltas": 0,

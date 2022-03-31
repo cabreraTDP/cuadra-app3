@@ -1,14 +1,14 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import App from './App';
 
+import RoutingPage from './RoutingPage';
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RoutingPage/>
   </React.StrictMode>,
   document.getElementById('root')
 );

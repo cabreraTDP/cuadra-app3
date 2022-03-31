@@ -1,6 +1,49 @@
+import axios from 'axios';
+import { useState } from 'react';
 import '../CSS/SignIn.css'
+import {useNavigate} from 'react-router-dom'
 import InputForm from './Modules/Empleados/InputForm'
+import store from '../state/store';
+import {login}  from '../state/actions/auth_actions'
+import { AUTH_LOGIN, AUTH_LOGOUT } from '../state/actions/types';
+import { Post } from '../utils/axiosUtils';
+
+const URL = "http://localhost:7799"
+
+
 const SignIn = () => {
+
+    const [datos, setData] = useState({});
+    const [error, setError] = useState('');
+
+    const navigate = useNavigate();
+
+    const onSubmitHandler = async(e) => {
+        e.preventDefault();
+
+        try{
+            const respuesta = await Post('/users/signIn', datos);
+            if(respuesta){
+                console.log('Login');
+                await store.dispatch(login(respuesta));
+                navigate('/app');
+            }
+        }catch(e){
+            console.log('error',e.response.data.error);
+            console.error(e.response.data.error);
+            setError(e.response.data.error);
+        }
+        
+    };
+
+    const onChangeText = (e) => {
+        const {name, value} = e.target;
+        setError('');
+        setData({
+            ...datos,
+            [name]: value
+        });
+    };
 
     return (
         <div id='principal'>
@@ -9,24 +52,26 @@ const SignIn = () => {
             <div className='contenedor'>
                 <h1 style={{color:'blue'}}>Bienvenido(a) a <b style={{color:'black'}}>CUADRA</b> </h1>
                 <h2 style={{color:'blue'}}><b> Ingresa aquí</b></h2>
+                <form onSubmit={onSubmitHandler}>
                 <div id='inputs'>
                     <label style={{fontSize:'23px'}}><b>Usuario</b></label >
-                    <input />
+                    <input style={{padding: '5px'}} name='usuario' onChange={onChangeText} required/>
                 </div>
-
                 <div id='inputs' >
                     <label style={{fontSize:'23px'}}><b>Contraseña</b></label >
-                    <input />
+                    <input style={{padding: '5px'}} name='password' onChange={onChangeText} required/>
 
                     <a href="https://www.mozilla.org/es-ES/" id='a'>Olvidé mi contraseña</a>.
-
+                    <h3 style={{color:'red', textAlign:'center'}}>{error?error:null}</h3>
                 </div>
+
                 <div style={{
-                    marginTop: '50px',
+                    marginTop: '10px',
                     paddingLeft: '200px',
 
                 }}>
-                    <button type="button"
+                     
+                    <button type="submit"
                         style={{
                             backgroundColor: 'blue',
                             border: 0,
@@ -37,11 +82,13 @@ const SignIn = () => {
                             fontSize:'20px'
                         }}
 
-                    >Iniciar Sesion</button>
+                    >Iniciar Sesion
+                    </button>
                 </div>
-
+                </form>
 
             </div>
+            
         </div>
     )
 }

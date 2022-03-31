@@ -21,13 +21,13 @@ const SideMenu = () => {
                 {isMenuShown?
                 <tbody>
                 <tr>
-                <td><Link to="/"><Icon name="star" strokeWidth="3" size="25"/>Incio</Link></td>
+                <td><Link to="home"><Icon name="star" strokeWidth="3" size="25"/>Incio</Link></td>
                 </tr>
                 <tr>
-                <td><Link to="/empleados"><Icon name="user"  strokeWidth="3" size="25"/>Empleados</Link></td>
+                <td><Link to="empleados"><Icon name="user"  strokeWidth="3" size="25"/>Empleados</Link></td>
                 </tr>
                 <tr>
-                <td><Link to="/nominas"><Icon name="briefcase"  strokeWidth="3" size="25"/>Nominas</Link></td>
+                <td><Link to="nominas"><Icon name="briefcase"  strokeWidth="3" size="25"/>Nominas</Link></td>
                 </tr>
                 <tr>    
                 <td><Link to=""><Icon name="users" strokeWidth="3" size="25"/>IMSS</Link></td>

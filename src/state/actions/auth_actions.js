@@ -1,15 +1,28 @@
-import { AUTH_LOGOUT } from './types';
+import { AUTH_LOGIN, AUTH_LOGOUT } from './types';
 import { Post } from '../../utils/axiosUtils';
+import axios from 'axios';
 
-export const login = () => {
-  return async (dispatch) => {
+export const login = (respuesta) => {
+  return async (dispatch, getState) => {
     try {
       console.log('auth...')
-      const resp = await Post('/prueba/auth');
-      const data = resp.data;
+      
+      let resp = false;
 
-      console.log(data)
-      return data;
+      if(respuesta){
+        resp=true;
+        await dispatch({
+          type: AUTH_LOGIN, 
+          payload:{isSignedIn:true}
+        });
+      }else{
+        await dispatch({
+          type: AUTH_LOGIN, 
+          payload:{isSignedIn:false}
+        });
+      }
+
+      return resp;
 
     } catch (err) {
       console.log(

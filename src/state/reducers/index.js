@@ -4,7 +4,7 @@ import { AUTH_LOGOUT } from '../actions/types';
 import auth from './auth_reducer';
 
 const appReducer = combineReducers({
-  profileProps: () => auth
+  auth
 });
 
 const rootReducer = (state, action) => {

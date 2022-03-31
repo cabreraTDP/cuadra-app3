@@ -1,5 +1,5 @@
 import axios from 'axios';
-const URL = REACT_APP_URL_URI
+const URL = process.env.REACT_APP_URL_URI
 
 export const Post = async (url, body = {}, options = { withCredentials: true }) => {
 

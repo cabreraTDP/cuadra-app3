@@ -10,7 +10,6 @@ const NuevoEmpleado = () => {
 
     const [datos, setDatos] = useState({})
 
-
     const onSubmitHandler = async(e) => {
         e.preventDefault();
         console.log(datos);

@@ -166,11 +166,11 @@ const titles = ['ID','Nombre','RFC','CURP','IMSS','Sueldo Real']
 
 const options = [
     {
-        link: '/empleados/nuevo',
+        link: 'nuevo',
         title: 'Nuevo Empleado'
     },
     {
-        link: '/nominas/nuevo',
+        link: '/app/nominas/nuevo',
         title: 'Nueva Nómina'
     }
 ]

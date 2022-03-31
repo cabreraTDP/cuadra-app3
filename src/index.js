@@ -1,13 +1,22 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
+import SignIn from './Components/SignIn'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {AuthRouteComponent} from './Components/AuthRouteComponent'
 
+import Empleados from "./Components/Modules/Empleados/Empleados";
+import NuevoEmpleado from "./Components/Modules/Empleados/NuevoEmpleado";
+import Home from "./Components/Modules/Home";
+import Nominas from "./Components/Modules/Nominas/Nominas";
+import NuevoNomina from "./Components/Modules/Nominas/NuevoNomina"
+import RoutingPage from './RoutingPage';
 
 ReactDOM.render(
   <React.StrictMode>
-    <SignIn />
+    <RoutingPage/>
   </React.StrictMode>,
   document.getElementById('root')
 );

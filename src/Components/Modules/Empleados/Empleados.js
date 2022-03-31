@@ -11,7 +11,7 @@ const Empleados = () => {
         "Nombre": "",
         "RFC": "",
         "CURP": "",
-        "IMSS": ""
+        "NSS": ""
     }]);
 
     useEffect(async()=>{
@@ -22,13 +22,13 @@ const Empleados = () => {
                 "Nombre": trabajador.datosPersonales.nombre,
                 "RFC": trabajador.datosPersonales.rfc,
                 "CURP": trabajador.datosPersonales.curp,
-                "IMSS": trabajador.datosPersonales.imss
+                "NSS": trabajador.datosPersonales.nss
             } :
             {
                 "Nombre": '',
                 "RFC": "",
                 "CURP": "",
-                "IMSS": ""
+                "NSS": ""
             }
         )));
 

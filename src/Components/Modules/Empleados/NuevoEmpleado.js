@@ -15,8 +15,7 @@ const NuevoEmpleado = () => {
 
     const onSubmitHandler = async(e) => {
         e.preventDefault();
-        const respuesta = await Post('/trabajadores/add', datos);
-        console.log(respuesta);
+        await Post('/trabajadores/add', datos);
         navigate('/app/empleados');
     };
 
@@ -59,7 +58,7 @@ const NuevoEmpleado = () => {
                                     onChangeHandler={(e)=>onChangeHandler(e)}
                                 />
                         )}
-                        <input type="submit" />
+                        <input type="submit" style={{width:'100%'}} />
                     </form>
                 </div>
 

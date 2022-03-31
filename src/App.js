@@ -23,7 +23,6 @@ function App() {
         <div className="item-header"><Header /></div>
           <div className="item-menu "><SideMenu  /></div>
           <div className="item-main"><MainBox /></div>
-          <Outlet/>
 
       </div>
     </div>

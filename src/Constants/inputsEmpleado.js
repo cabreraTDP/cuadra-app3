@@ -30,16 +30,16 @@ const inputsEmpleado = [
         name: "curp"
     }, 
     {
+        etiqueta: "RFC",
+        placeholder: "----",
+        tipo: "text",
+        name: "rfc"
+    }, 
+    {
         etiqueta: "Calle",
         placeholder: "----",
         tipo: "text",
         name: "calle"
-    }, 
-    {
-        etiqueta: "CURP",
-        placeholder: "----",
-        tipo: "text",
-        name: "curp"
     }, 
     {
         etiqueta: "Número Exterior",

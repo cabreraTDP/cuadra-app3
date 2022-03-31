@@ -20,26 +20,25 @@ const Nominas = () => {
 
     useEffect(()=>{
         const getData = async(URL) => {
-            await axios.get(`${URL}/nominas`, {withCredentials: true});
+            const nominas = await axios.get(`${URL}/nominas`, {withCredentials: true});
+            setDataNominas(nominas.data.data.map((nomina) => (
+                nomina.detalle ? {
+                    "Periodo Inicio": nomina.detalle.periodoInicio.slice(0,10),
+                    "Periodo Fin": nomina.detalle.periodoFin.slice(0,10),
+                    "Semana": nomina.detalle.semana,
+                    "Total": nomina.detalle.total,
+                    "Ver": nomina._id
+                } :
+                {
+                    "Periodo Inicio": '',
+                    "Periodo Fin": "",
+                    "Semana": "",
+                    "Total": "",
+                    "Ver": ""
+                }
+            )));
         }
-        const nominas = getData(URL)
-
-        setDataNominas(nominas.data.data.map((nomina) => (
-            nomina.detalle ? {
-                "Periodo Inicio": nomina.detalle.periodoInicio.slice(0,10),
-                "Periodo Fin": nomina.detalle.periodoFin.slice(0,10),
-                "Semana": nomina.detalle.semana,
-                "Total": nomina.detalle.total,
-                "Ver": nomina._id
-            } :
-            {
-                "Periodo Inicio": '',
-                "Periodo Fin": "",
-                "Semana": "",
-                "Total": "",
-                "Ver": ""
-            }
-        )));
+        getData(URL).catch(console.error);
 
 
     },[]);

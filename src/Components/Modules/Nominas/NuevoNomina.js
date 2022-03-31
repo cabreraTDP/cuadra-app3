@@ -59,33 +59,35 @@ const NuevoNomina = () => {
 
     useEffect(()=>{
         const getData = async(URL) => {
-            await axios.get(`${URL}/trabajadores`, {withCredentials: true});
+            const trabajadores = await axios.get(`${URL}/trabajadores`, {withCredentials: true});
+            setDataEmpleados(trabajadores.data.data.map((trabajador) => (
+                trabajador.datosPersonales ? {
+                    "Nombre": `${trabajador.datosPersonales.nombre} ${trabajador.datosPersonales.apellidoPaterno} ${trabajador.datosPersonales.apellidoMaterno}`,
+                    "Faltas": 0,
+                    "Complementos": 0,
+                    "Rebajes": 0
+                } :
+                {
+                    "Nombre": '',
+                    "Faltas": 0,
+                    "Complementos": 0,
+                    "Rebajes": 0
+                })
+            ));
+            setDatos(trabajadores.data.data.map(trabajador=>(
+                {
+                "trabajador": trabajador._id,
+                "sueldoBase": Number(trabajador.datosLaborales.sueldo),
+                "dias": 0,
+                "complementos": 0,
+                "rebajes": 0
+                }
+            )
+            ));
         }
-        const trabajadores = getData(URL)
-        setDataEmpleados(trabajadores.data.data.map((trabajador) => (
-            trabajador.datosPersonales ? {
-                "Nombre": `${trabajador.datosPersonales.nombre} ${trabajador.datosPersonales.apellidoPaterno} ${trabajador.datosPersonales.apellidoMaterno}`,
-                "Faltas": 0,
-                "Complementos": 0,
-                "Rebajes": 0
-            } :
-            {
-                "Nombre": '',
-                "Faltas": 0,
-                "Complementos": 0,
-                "Rebajes": 0
-            })
-        ));
-        setDatos(trabajadores.data.data.map(trabajador=>(
-            {
-            "trabajador": trabajador._id,
-            "sueldoBase": Number(trabajador.datosLaborales.sueldo),
-            "dias": 0,
-            "complementos": 0,
-            "rebajes": 0
-            }
-        )
-        ));
+
+        getData(URL).catch(console.error)
+        
     },[]);
 
     return (

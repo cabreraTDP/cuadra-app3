@@ -15,25 +15,25 @@ const Empleados = () => {
     }]);
 
     useEffect(()=>{
-        const  getData = async() => {
-            await axios.get(`${URL}/trabajadores`, {withCredentials: true});
+        const  getData = async(URL) => {
+            const trabajadores = await axios.get(`${URL}/trabajadores`, {withCredentials: true});
+            setDataEmpleados(trabajadores.data.data.map((trabajador) => (
+                trabajador.datosPersonales ? {
+                    "Nombre": trabajador.datosPersonales.nombre,
+                    "RFC": trabajador.datosPersonales.rfc,
+                    "CURP": trabajador.datosPersonales.curp,
+                    "NSS": trabajador.datosPersonales.nss
+                } :
+                {
+                    "Nombre": '',
+                    "RFC": "",
+                    "CURP": "",
+                    "NSS": ""
+                }
+            )));
         }
-        const trabajadores = getData();
-
-        setDataEmpleados(trabajadores.data.data.map((trabajador) => (
-            trabajador.datosPersonales ? {
-                "Nombre": trabajador.datosPersonales.nombre,
-                "RFC": trabajador.datosPersonales.rfc,
-                "CURP": trabajador.datosPersonales.curp,
-                "NSS": trabajador.datosPersonales.nss
-            } :
-            {
-                "Nombre": '',
-                "RFC": "",
-                "CURP": "",
-                "NSS": ""
-            }
-        )));
+        getData(URL).catch(console.error);
+        
 
     },[]);
 

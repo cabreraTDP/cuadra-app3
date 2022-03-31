@@ -31,25 +31,28 @@ const DetalleNomina = () => {
         const body = {
             id: id
         };
+
         const getData = async(body) => {
-            await Post('/nominas/getById', body);
-        }
-        const nominas = getData(body);
+            const nominas = await Post('/nominas/getById', body);
 
-        const registros = nominas.data.data[0].registros.map((registro) => ({
-            "Nombre": `${registro.trabajador.datosPersonales.nombre} ${registro.trabajador.datosPersonales.apellidoPaterno} ${registro.trabajador.datosPersonales.apellidoMaterno}`,
-            "Banco": registro.trabajador.datosBancarios.banco,
-            "Clabe": registro.trabajador.datosBancarios.clabe,
-            "Faltas": registro.faltas,
-            "Complementos": registro.complementos,
-            "Rebajes": registro.rebajes,
-            "Total a pagar": registro.totalPagar
-        }));
+            const registros = nominas.data.data[0].registros.map((registro) => ({
+                "Nombre": `${registro.trabajador.datosPersonales.nombre} ${registro.trabajador.datosPersonales.apellidoPaterno} ${registro.trabajador.datosPersonales.apellidoMaterno}`,
+                "Banco": registro.trabajador.datosBancarios.banco,
+                "Clabe": registro.trabajador.datosBancarios.clabe,
+                "Faltas": registro.faltas,
+                "Complementos": registro.complementos,
+                "Rebajes": registro.rebajes,
+                "Total a pagar": registro.totalPagar
+            }));
 
-        setNomina(registros);
-        setPeriodoInicio(nominas.data.data[0].detalle.periodoInicio.slice(0,10));
-        setPeriodoFin(nominas.data.data[0].detalle.periodoFin.slice(0,10));
-        setSemana(nominas.data.data[0].detalle.semana)
+            setNomina(registros);
+            setPeriodoInicio(nominas.data.data[0].detalle.periodoInicio.slice(0,10));
+            setPeriodoFin(nominas.data.data[0].detalle.periodoFin.slice(0,10));
+            setSemana(nominas.data.data[0].detalle.semana)
+        };
+
+        getData(body).catch(console.error);
+        
 
     },[id]); 
 

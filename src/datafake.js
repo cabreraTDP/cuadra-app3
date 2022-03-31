@@ -163,7 +163,7 @@ const data = [
 ]
 
 const titles = ['Nombre','RFC','CURP','NSS']
-//const titles2 = ['ID','Nombre','RFC','CURP','IMSS','Sueldo Real']
+
 
 const options = [
     {

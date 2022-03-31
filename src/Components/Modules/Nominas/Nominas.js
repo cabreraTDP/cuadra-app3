@@ -4,38 +4,42 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 
+const titlesNomina = ['Periodo Inicio','Periodo Fin','Semana','Total']
+
 const Nominas = () => {
     const [nominas, setNominas] = useState([]);
     const [dataNominas, setDataNominas] = useState([{
-        "Nombre": "",
-        "RFC": "",
-        "CURP": "",
-        "NSS": ""
+        "Periodo Inicio": '',
+        "Periodo Fin": "",
+        "Semana": "",
+        "Total": ""
     }]);
 
     useEffect(async()=>{
-        const trabajadores = await axios.get('http://localhost:7799/nominas', {withCredentials: true});
-        setNominas(trabajadores.data.data);
-        setDataNominas(trabajadores.data.data.map((trabajador) => (
-            trabajador.datosPersonales ? {
-                "Nombre": trabajador.datosPersonales.nombre,
-                "RFC": trabajador.datosPersonales.rfc,
-                "CURP": trabajador.datosPersonales.curp,
-                "NSS": trabajador.datosPersonales.nss
+        const nominas = await axios.get('http://localhost:7799/nominas', {withCredentials: true});
+        setNominas(nominas.data.data);
+        setDataNominas(nominas.data.data.map((nomina) => (
+            nomina.detalle ? {
+                "Periodo Inicio": nomina.detalle.periodoInicio,
+                "Periodo Fin": nomina.detalle.periodoFin,
+                "Semana": nomina.detalle.semana,
+                "Total": nomina.detalle.total
             } :
             {
-                "Nombre": '',
-                "RFC": "",
-                "CURP": "",
-                "NSS": ""
+                "Periodo Inicio": '',
+                "Periodo Fin": "",
+                "Semana": "",
+                "Total": ""
             }
         )));
+        console.log(nominas.data.data);
+        console.log(dataNominas)
 
     },[]);
     return (
         <div >
             <h1>Nominas</h1>
-            <TableDisplay titles={titles} rawData={data} options={options}/>
+            <TableDisplay titles={titlesNomina} rawData={dataNominas} options={options}/>
         </div>
     )
 }

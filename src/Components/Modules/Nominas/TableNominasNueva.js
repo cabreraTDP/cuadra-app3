@@ -1,14 +1,14 @@
 import '../../../CSS/TableDisplay.css'
 import { useTable, useFilters, useGlobalFilter, useSortBy, usePagination } from 'react-table'
 import React from 'react'
-import {GlobalFilter, DefaultColumnFilter} from '../../TableUtils'
+import { DefaultColumnFilter} from '../../TableUtils'
 import Icon from "awesome-react-icons";
 // A great library for fuzzy filtering/sorting items
 
 
 const TableNominasNueva = (props) => {
 
-    const { titles, rawData, options } = props;
+    const { titles, rawData } = props;
 
     const data = React.useMemo(
         () => rawData,[rawData]
@@ -44,9 +44,6 @@ const TableNominasNueva = (props) => {
         headerGroups,
         page,
         prepareRow,
-        state,
-        preGlobalFilteredRows,
-        setGlobalFilter,
         canPreviousPage,
         canNextPage,
         pageOptions,

@@ -1,9 +1,7 @@
 import '../../../CSS/nuevoNomina.css'
 import TableDisplay from "../../TableDisplay"
 
-import { titles, data } from '../../../dataDetalleNomina';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Post } from '../../../utils/axiosUtils';
 
@@ -28,13 +26,15 @@ const DetalleNomina = () => {
 
     const { id } = useParams();
 
-    useEffect(async() => {
+    useEffect(() => {
 
         const body = {
             id: id
         };
-
-        const nominas = await Post('/nominas/getById', body)
+        const getData = async(body) => {
+            await Post('/nominas/getById', body);
+        }
+        const nominas = getData(body);
 
         const registros = nominas.data.data[0].registros.map((registro) => ({
             "Nombre": `${registro.trabajador.datosPersonales.nombre} ${registro.trabajador.datosPersonales.apellidoPaterno} ${registro.trabajador.datosPersonales.apellidoMaterno}`,
@@ -51,7 +51,7 @@ const DetalleNomina = () => {
         setPeriodoFin(nominas.data.data[0].detalle.periodoFin.slice(0,10));
         setSemana(nominas.data.data[0].detalle.semana)
 
-    },[]); 
+    },[id]); 
 
     return (
         <div>

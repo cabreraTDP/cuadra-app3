@@ -1,6 +1,5 @@
 import { AUTH_LOGIN, AUTH_LOGOUT } from './types';
 import { Post } from '../../utils/axiosUtils';
-import axios from 'axios';
 
 export const login = (respuesta) => {
   return async (dispatch, getState) => {

@@ -57,8 +57,11 @@ const NuevoNomina = () => {
         navigate('/app/nominas');
     };
 
-    useEffect(async()=>{
-        const trabajadores = await axios.get(`${URL}/trabajadores`, {withCredentials: true});
+    useEffect(()=>{
+        const getData = async(URL) => {
+            await axios.get(`${URL}/trabajadores`, {withCredentials: true});
+        }
+        const trabajadores = getData(URL)
         setDataEmpleados(trabajadores.data.data.map((trabajador) => (
             trabajador.datosPersonales ? {
                 "Nombre": `${trabajador.datosPersonales.nombre} ${trabajador.datosPersonales.apellidoPaterno} ${trabajador.datosPersonales.apellidoMaterno}`,

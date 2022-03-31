@@ -18,8 +18,11 @@ const Nominas = () => {
         "Ver": ""
     }]);
 
-    useEffect(async()=>{
-        const nominas = await axios.get(`${URL}/nominas`, {withCredentials: true});
+    useEffect(()=>{
+        const getData = async(URL) => {
+            await axios.get(`${URL}/nominas`, {withCredentials: true});
+        }
+        const nominas = getData(URL)
 
         setDataNominas(nominas.data.data.map((nomina) => (
             nomina.detalle ? {

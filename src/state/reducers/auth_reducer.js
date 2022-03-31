@@ -4,6 +4,9 @@ const initialState = {
   loading: true,
   isSignedIn: false
 };
+    /* eslint-disable */
+
+  
 
 export default (state = initialState, action) => {
   const { type, payload } = action;

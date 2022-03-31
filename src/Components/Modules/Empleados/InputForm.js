@@ -2,7 +2,7 @@ const InputForm = (props) => {
 
     return (
         <div style={{ padding:'2px', marginTop:'2px'}}>
-                <label style={{ display: 'block' }}>
+                <label style={{ display: 'block', marginLeft:'5%' }}>
                     {props.etiqueta}
                 </label>
 

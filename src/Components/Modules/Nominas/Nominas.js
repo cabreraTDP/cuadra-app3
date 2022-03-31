@@ -32,8 +32,7 @@ const Nominas = () => {
                 "Total": ""
             }
         )));
-        console.log(nominas.data.data);
-        console.log(dataNominas)
+
 
     },[]);
     return (

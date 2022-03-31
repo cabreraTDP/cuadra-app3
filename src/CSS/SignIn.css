@@ -23,7 +23,7 @@ body{
     grid-template-columns: auto;
     width: 20%;
   }
-  Input{ margin: 10px;
+  .input{ margin: 10px;
     height: 30px;
     width: 500px;
     border: 0;

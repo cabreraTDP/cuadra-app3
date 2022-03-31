@@ -4,8 +4,7 @@ const URL = "http://localhost:7799"
 export const Post = async (url, body = {}, options = { withCredentials: true }) => {
 
   const config = {
-    headers: { 'Content-Type': 'application/json'
-  },
+    headers: { 'Content-Type': 'application/json'},
     ...options
   };
 
@@ -15,7 +14,6 @@ export const Post = async (url, body = {}, options = { withCredentials: true }) 
 
     const ruta = URL+url
     const resp = await axios.post(ruta, bodyStr, config);
-
 
     return resp;
 
@@ -34,9 +32,11 @@ export const Get = async (url, body = {}, options = { withCredentials: true }) =
     };
   
     const bodyStr = JSON.stringify(body);
-  
+
     try {
-      const resp = await axios.get(URL + url, bodyStr, config);
+      const ruta = URL+url
+      const resp = await axios.get(ruta, bodyStr, config);
+      
       return resp;
   
     } catch (err) {

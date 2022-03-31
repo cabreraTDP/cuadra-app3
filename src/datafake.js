@@ -162,7 +162,8 @@ const data = [
     }
 ]
 
-const titles = ['ID','Nombre','RFC','CURP','IMSS','Sueldo Real']
+const titles = ['Nombre','RFC','CURP','IMSS']
+const titles2 = ['ID','Nombre','RFC','CURP','IMSS','Sueldo Real']
 
 const options = [
     {

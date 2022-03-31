@@ -6,6 +6,8 @@ import axios from 'axios';
 import { Post } from '../../../utils/axiosUtils';
 import { useNavigate } from 'react-router';
 
+const URL = process.env.REACT_APP_URL_URI;
+
 const NuevoNomina = () => {
     const [dataEmpleados, setDataEmpleados] = useState([{
         "Nombre": '',
@@ -56,10 +58,10 @@ const NuevoNomina = () => {
     };
 
     useEffect(async()=>{
-        const trabajadores = await axios.get('http://localhost:7799/trabajadores', {withCredentials: true});
+        const trabajadores = await axios.get(`${URL}/trabajadores`, {withCredentials: true});
         setDataEmpleados(trabajadores.data.data.map((trabajador) => (
             trabajador.datosPersonales ? {
-                "Nombre": trabajador.datosPersonales.nombre,
+                "Nombre": `${trabajador.datosPersonales.nombre} ${trabajador.datosPersonales.apellidoPaterno} ${trabajador.datosPersonales.apellidoMaterno}`,
                 "Faltas": 0,
                 "Complementos": 0,
                 "Rebajes": 0

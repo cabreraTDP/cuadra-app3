@@ -109,7 +109,7 @@ const TableDisplay = (props) => {
                  <tr {...row.getRowProps()}>
                     {row.cells.map(cell => (
                    cell.column.Header==='Ver'?
-                    <td {...cell.getCellProps()}><a href={`nominas/ver/${cell.value}`}>{cell.value}</a></td>    :
+                    <td {...cell.getCellProps()}><a href={`nominas/ver/${cell.value}`}>Ver</a></td>    :
                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td> 
                     ))}
                  </tr>

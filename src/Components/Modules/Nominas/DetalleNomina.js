@@ -45,14 +45,10 @@ const DetalleNomina = () => {
             "Rebajes": registro.rebajes,
             "Total a pagar": registro.totalPagar
         }));
-        console.log(registros)
-
-        console.log(nominas.data.data[0].detalle)
-    
 
         setNomina(registros);
-        setPeriodoInicio(nominas.data.data[0].detalle.periodoInicio);
-        setPeriodoFin(nominas.data.data[0].detalle.periodoFin);
+        setPeriodoInicio(nominas.data.data[0].detalle.periodoInicio.slice(0,10));
+        setPeriodoFin(nominas.data.data[0].detalle.periodoFin.slice(0,10));
         setSemana(nominas.data.data[0].detalle.semana)
 
     },[]); 

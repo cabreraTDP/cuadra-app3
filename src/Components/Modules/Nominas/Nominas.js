@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 
+const URL = process.env.REACT_APP_URL_URI;
+
 const titlesNomina = ['Periodo Inicio','Periodo Fin','Semana','Total','Ver']
 
 const Nominas = () => {
@@ -17,12 +19,12 @@ const Nominas = () => {
     }]);
 
     useEffect(async()=>{
-        const nominas = await axios.get('http://localhost:7799/nominas', {withCredentials: true});
+        const nominas = await axios.get(`${URL}/nominas`, {withCredentials: true});
 
         setDataNominas(nominas.data.data.map((nomina) => (
             nomina.detalle ? {
-                "Periodo Inicio": nomina.detalle.periodoInicio,
-                "Periodo Fin": nomina.detalle.periodoFin,
+                "Periodo Inicio": nomina.detalle.periodoInicio.slice(0,10),
+                "Periodo Fin": nomina.detalle.periodoFin.slice(0,10),
                 "Semana": nomina.detalle.semana,
                 "Total": nomina.detalle.total,
                 "Ver": nomina._id

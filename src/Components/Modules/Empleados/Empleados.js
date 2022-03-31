@@ -3,7 +3,7 @@ import { titles, data, options } from '../../../datafake';
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
-
+const URL = process.env.REACT_APP_URL_URI;
 
 const Empleados = () => {
     const [empleados, setEmpleados] = useState([]);
@@ -15,7 +15,7 @@ const Empleados = () => {
     }]);
 
     useEffect(async()=>{
-        const trabajadores = await axios.get('localhost:7799/trabajadores', {withCredentials: true});
+        const trabajadores = await axios.get(`${URL}/trabajadores`, {withCredentials: true});
         setEmpleados(trabajadores.data.data);
         setDataEmpleados(trabajadores.data.data.map((trabajador) => (
             trabajador.datosPersonales ? {

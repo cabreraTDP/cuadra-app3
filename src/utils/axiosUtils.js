@@ -1,5 +1,5 @@
 import axios from 'axios';
-const URL = "http://localhost:7799"
+const URL = REACT_APP_URL_URI
 
 export const Post = async (url, body = {}, options = { withCredentials: true }) => {
 

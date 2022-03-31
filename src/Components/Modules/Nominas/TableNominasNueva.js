@@ -72,12 +72,12 @@ const TableNominasNueva = (props) => {
     return (
         <>
         
-        <GlobalFilter
+        {/* <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
             setGlobalFilter={setGlobalFilter}
             options={options}
-        />
+        /> */}
          <div className="TableContainer">
          <table {...getTableProps()} className="Table">
            <thead >             
@@ -109,9 +109,8 @@ const TableNominasNueva = (props) => {
                  <tr {...row.getRowProps()}>
                    {row.cells.map(cell => 
                    cell.column.Header!=='Nombre'?
-                    <td {...cell.getCellProps()}><input type='number' name={cell.column.Header} id={cell.row.id} onChange={(e) => props.onChangeHandler(e)}/></td>    :
+                    <td {...cell.getCellProps()}><input type='number' className='inputNomina' name={cell.column.Header} id={cell.row.id} onChange={(e) => props.onChangeHandler(e)}/></td>    :
                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                   
                    )}
                  </tr>
                )

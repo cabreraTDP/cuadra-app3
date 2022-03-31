@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 
-const titlesNomina = ['Periodo Inicio','Periodo Fin','Semana','Total']
+const titlesNomina = ['Periodo Inicio','Periodo Fin','Semana','Total','Ver']
 
 const Nominas = () => {
 
@@ -12,7 +12,8 @@ const Nominas = () => {
         "Periodo Inicio": '',
         "Periodo Fin": "",
         "Semana": "",
-        "Total": ""
+        "Total": "",
+        "Ver": ""
     }]);
 
     useEffect(async()=>{
@@ -23,13 +24,15 @@ const Nominas = () => {
                 "Periodo Inicio": nomina.detalle.periodoInicio,
                 "Periodo Fin": nomina.detalle.periodoFin,
                 "Semana": nomina.detalle.semana,
-                "Total": nomina.detalle.total
+                "Total": nomina.detalle.total,
+                "Ver": nomina._id
             } :
             {
                 "Periodo Inicio": '',
                 "Periodo Fin": "",
                 "Semana": "",
-                "Total": ""
+                "Total": "",
+                "Ver": ""
             }
         )));
 

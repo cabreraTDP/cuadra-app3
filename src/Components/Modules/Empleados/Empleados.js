@@ -15,7 +15,7 @@ const Empleados = () => {
     }]);
 
     useEffect(async()=>{
-        const trabajadores = await axios.get('http://localhost:7799/trabajadores', {withCredentials: true});
+        const trabajadores = await axios.get('localhost:7799/trabajadores', {withCredentials: true});
         setEmpleados(trabajadores.data.data);
         setDataEmpleados(trabajadores.data.data.map((trabajador) => (
             trabajador.datosPersonales ? {

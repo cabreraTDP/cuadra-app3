@@ -96,29 +96,23 @@ const NuevoNomina = () => {
                             <div id="titulo">
                                 Esquema
                             </div>
-                            <div id="info">
-                                <select name="esquema" onChange={onChangeEsquema}>
+                                <select name="esquema" className='esquemaInput' onChange={onChangeEsquema} required>
                                     <option value="Semana">Semanal</option>
                                     <option value="Quincena">Quincenal</option>
 
                                 </select>
-                            </div>
                         </div>
                         <div id="informacionEspecifica">
                             <div id="titulo">
                                 De la fecha:
                             </div>
-                            <div id="info">
-                                <input type='date' name="periodoInicio" onChange={onChangePeriodoInicio}/>
-                            </div>
+                                <input className='periodoInput' type='date' name="periodoInicio" onChange={onChangePeriodoInicio} required/>
                         </div>
                         <div id="informacionEspecifica">
                             <div id="titulo">
                                 A la fecha:
                             </div>
-                            <div id="info">
-                                <input type='date' name="periodoFin" onChange={onChangePeriodoFin}/>
-                            </div>
+                                <input type='date' className='periodoInput' name="periodoFin" onChange={onChangePeriodoFin} required/>
                         </div>
                     </div>
 
@@ -126,7 +120,7 @@ const NuevoNomina = () => {
                 <div >
 
                     <TableNominasNueva titles={titles} rawData={dataEmpleados} onChangeHandler={(e)=>onChangeHandler(e)}/>
-                    <button type='submit'>Enviar</button>
+                    <button type='submit' className='submitButton'>Enviar</button>
                     
                 </div>
                 </form>

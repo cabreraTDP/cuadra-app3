@@ -10,6 +10,7 @@ import Home from "./Components/Modules/Home";
 import Nominas from "./Components/Modules/Nominas/Nominas";
 import NuevoNomina from "./Components/Modules/Nominas/NuevoNomina"
 import { Fragment } from 'react';
+import DetalleNomina from './Components/Modules/Nominas/DetalleNomina';
 
 
 const RoutingPage = () => {
@@ -42,6 +43,7 @@ const RoutingPage = () => {
                     <Route path="empleados/nuevo" element={<NuevoEmpleado />} />
                     <Route path="nominas" element={<Nominas />} />
                     <Route path="nominas/nuevo" element={<NuevoNomina />} />
+                    <Route path="nominas/ver/:id" element={<DetalleNomina />} />
                     <Route path="*" element={<Home />} />
                 </Route>
             </Route>

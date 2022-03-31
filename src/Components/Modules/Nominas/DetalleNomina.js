@@ -2,8 +2,60 @@ import '../../../CSS/nuevoNomina.css'
 import TableDisplay from "../../TableDisplay"
 
 import { titles, data } from '../../../dataDetalleNomina';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { Post } from '../../../utils/axiosUtils';
 
-const NuevoNomina = () => {
+const titlesNomina = ['Nombre','Banco','Clabe','Faltas','Complementos',"Rebajes", "Total a pagar"]
+
+
+const DetalleNomina = () => {
+
+    const [nomina, setNomina] = useState([{
+        "Nombre": "",
+        "Banco": "",
+        "Clabe": "",
+        "Faltas": "",
+        "Complementos": "",
+        "Rebajes": "",
+        "Total a pagar": ""
+    }]);
+    const [periodoInicio, setPeriodoInicio] = useState(null);
+    const [periodoFin, setPeriodoFin] = useState(null);
+    const [semana, setSemana] = useState(null);
+
+
+    const { id } = useParams();
+
+    useEffect(async() => {
+
+        const body = {
+            id: id
+        };
+
+        const nominas = await Post('/nominas/getById', body)
+
+        const registros = nominas.data.data[0].registros.map((registro) => ({
+            "Nombre": `${registro.trabajador.datosPersonales.nombre} ${registro.trabajador.datosPersonales.apellidoPaterno} ${registro.trabajador.datosPersonales.apellidoMaterno}`,
+            "Banco": registro.trabajador.datosBancarios.banco,
+            "Clabe": registro.trabajador.datosBancarios.clabe,
+            "Faltas": registro.faltas,
+            "Complementos": registro.complementos,
+            "Rebajes": registro.rebajes,
+            "Total a pagar": registro.totalPagar
+        }));
+        console.log(registros)
+
+        console.log(nominas.data.data[0].detalle)
+    
+
+        setNomina(registros);
+        setPeriodoInicio(nominas.data.data[0].detalle.periodoInicio);
+        setPeriodoFin(nominas.data.data[0].detalle.periodoFin);
+        setSemana(nominas.data.data[0].detalle.semana)
+
+    },[]); 
 
     return (
         <div>
@@ -18,7 +70,7 @@ const NuevoNomina = () => {
                                 Semana
                             </div>
                             <div id="info">
-                                8
+                                {semana}
                             </div>
                         </div>
                         <div id="informacionEspecifica">
@@ -26,7 +78,7 @@ const NuevoNomina = () => {
                                 De la fecha:
                             </div>
                             <div id="info">
-                                7 de marzo de 2022
+                                {periodoInicio}
                             </div>
                         </div>
                         <div id="informacionEspecifica">
@@ -34,17 +86,17 @@ const NuevoNomina = () => {
                                 A la fecha:
                             </div>
                             <div id="info">
-                                13 de marzo de 2022
+                                {periodoFin}
                             </div>
                         </div>
                     </div>
 
                 </div>
                 <div >
-                    <TableDisplay titles={titles} rawData={data} />
+                    <TableDisplay titles={titlesNomina} rawData={nomina} />
                 </div>
             </div>
-            <button type="button"
+           {/* <button type="button"
                 style={{
                     float:'right',
                     backgroundColor: '#dae6eb',
@@ -55,9 +107,9 @@ const NuevoNomina = () => {
                     width: '170px',
                     borderRadius: '6px',
                     fontSize: '20px',
-                }}>Crear</button>
+                }}>Crear</button>*/}
         </div>
     )
 }
 
-export default NuevoNomina
+export default DetalleNomina

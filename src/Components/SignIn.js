@@ -54,7 +54,7 @@ const SignIn = () => {
                 </div>
                 <div id='inputs' >
                     <label style={{fontSize:'23px'}}><b>Contraseña</b></label >
-                    <input className='input' style={{padding: '5px'}} name='password' onChange={onChangeText} required/>
+                    <input className='input' style={{padding: '5px'}} type='password' name='password' onChange={onChangeText} required/>
 
                     <a href="https://www.mozilla.org/es-ES/" id='a'>Olvidé mi contraseña</a>.
                     <h3 style={{color:'red', textAlign:'center'}}>{error?error:null}</h3>

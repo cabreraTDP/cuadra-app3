@@ -58,7 +58,7 @@ const NuevoEmpleado = () => {
                                     onChangeHandler={(e)=>onChangeHandler(e)}
                                 />
                         )}
-                        <input type="submit" style={{width:'100%'}} />
+                        <button className="submitButtonEmpleado" type="submit" style={{width:'100%'}} >Dar de Alta </button>
                     </form>
                 </div>
 

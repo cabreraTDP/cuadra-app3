@@ -17,7 +17,7 @@
 }
 
 .Table > tbody > tr:nth-child(odd){
-    background-color: #F2EBC2
+    background-color: rgb(218,230,235)
 }
 
 .Table > tbody > tr:nth-child(even){
@@ -26,6 +26,7 @@
 
 .Table > tbody > tr:hover{
     background-color: #B8BAF9;
+    opacity: 80%;
     color: black;
 }
 

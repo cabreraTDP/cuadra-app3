@@ -21,11 +21,10 @@ const NuevoEmpleado = () => {
 
     const onChangeHandler = async(e) => {
         const {name, value} = e.target;
-        await setDatos({
+        setDatos({
             ...datos,
             [name]: value
         });
-
     };
 
     return (

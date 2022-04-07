@@ -1,9 +1,9 @@
-const InputForm = (props) => {
+const InputForm = ({etiqueta, placeholder, tipo, name, value={}, onChangeHandler}) => {
 
     return (
         <div style={{ padding:'2px', marginTop:'2px'}}>
                 <label style={{ display: 'block', marginLeft:'5%' }}>
-                    {props.etiqueta}
+                    {etiqueta}
                 </label>
 
                 <input style={{ backgroundColor: '#f2ebc2',
@@ -11,10 +11,11 @@ const InputForm = (props) => {
                                 height: '25px',
                                 width:'90%'}}
                 
-                    placeholder={props.placeholder}
-                    type={props.tipo}
-                    name={props.name}
-                    onChange={(e) => props.onChangeHandler(e)}
+                    placeholder={placeholder}
+                    type={tipo}
+                    name={name}
+                    value={value}
+                    onChange={(e) => onChangeHandler(e)}
                 />
 
 

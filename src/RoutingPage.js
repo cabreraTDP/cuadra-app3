@@ -2,9 +2,12 @@
 import App from './App';
 import SignIn from './Components/SignIn'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {AuthRouteComponent} from './Components/AuthRouteComponent'
+import { AuthRouteComponent } from './Components/AuthRouteComponent'
 
 import Empleados from "./Components/Modules/Empleados/Empleados";
+import DetalleEmpleado from "./Components/Modules/Empleados/DetalleEmpleado";
+
+
 import NuevoEmpleado from "./Components/Modules/Empleados/NuevoEmpleado";
 import Home from "./Components/Modules/Home";
 import Nominas from "./Components/Modules/Nominas/Nominas";
@@ -32,24 +35,26 @@ const RoutingPage = () => {
     },[]) */
 
     return (
-    <Router>
-    <Fragment>
-        <Routes>
-            <Route exact path="/" element={<SignIn/>} />
-            <Route element={<AuthRouteComponent/>}  path="/app/*">
-                <Route   path="/app/*" element={<App/>} >
-                    <Route exact path="home" element={<Home />} />
-                    <Route exact path="empleados" element={<Empleados />} />
-                    <Route path="empleados/nuevo" element={<NuevoEmpleado />} />
-                    <Route path="nominas" element={<Nominas />} />
-                    <Route path="nominas/nuevo" element={<NuevoNomina />} />
-                    <Route path="nominas/ver/:id" element={<DetalleNomina />} />
-                    <Route path="*" element={<Home />} />
-                </Route>
-            </Route>
-        </Routes>
-        </Fragment>
-    </Router>
+        <Router>
+            <Fragment>
+                <Routes>
+                    <Route exact path="/" element={<SignIn />} />
+                    <Route element={<AuthRouteComponent />} path="/app/*">
+                        <Route path="/app/*" element={<App />} >
+                            <Route exact path="home" element={<Home />} />
+                            <Route exact path="empleados" element={<Empleados />} />
+                            <Route path="empleados/nuevo" element={<NuevoEmpleado />} />
+                            <Route path="empleados/detalle" element={<DetalleEmpleado />} />
+
+                            <Route path="nominas" element={<Nominas />} />
+                            <Route path="nominas/nuevo" element={<NuevoNomina />} />
+                            <Route path="nominas/ver/:id" element={<DetalleNomina />} />
+                            <Route path="*" element={<Home />} />
+                        </Route>
+                    </Route>
+                </Routes>
+            </Fragment>
+        </Router>
     );
 }
 

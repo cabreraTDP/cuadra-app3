@@ -8,6 +8,7 @@ const Home = () => {
             <h1>Home</h1>
             <button onClick={() => store.dispatch(actions.login())}>AUTH</button>
             <button onClick={() => store.dispatch(actions.prueba())}>PROBAR</button>
+            
 
         </div>
     )

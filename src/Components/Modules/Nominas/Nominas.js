@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const URL = process.env.REACT_APP_URL_URI;
 
-const titlesNomina = ['Periodo Inicio','Periodo Fin','Semana','Total','Ver']
+const titlesNomina = ['Periodo Inicio','Periodo Fin','Semana','Total','Ver'];
 
 const Nominas = () => {
 
@@ -45,7 +45,7 @@ const Nominas = () => {
     return (
         <div >
             <h1>Nominas</h1>
-            <TableDisplay titles={titlesNomina} rawData={dataNominas} options={options}/>
+            <TableDisplay titles={titlesNomina} rawData={dataNominas} options={options} link={'nominas/ver/'} />
         </div>
     )
 }

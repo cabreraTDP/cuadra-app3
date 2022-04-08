@@ -2,26 +2,22 @@ import '../../../CSS/gridLayout.css'
 import inputsEmpleado from "../../../Constants/inputsEmpleado"
 import InputForm from "./InputForm"
 import TableDisplay from "../../TableDisplay"
-import { titles, data } from '../../../dataModal';
-
 import { useState, useEffect } from 'react'
 import { Post } from '../../../utils/axiosUtils'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Modal } from 'react-bootstrap';
-import { render } from 'react-dom';
+
+import { getProp } from '../../../utils/functions'
+import { mapaDetalleEmpleado as mapa} from '../../../Constants/mapaDetalleEmpleado'
+import axios from 'axios';
 
 
-const id = "62452af649ab979c3136a2f1";
-
+const titleArchivos = ['Titulo','Fecha','Ver'];
 
 //Tratar de abstraer una estructura del json para el llenado del formulario
-const mapa = {
 
 
-}
-
-
-const NuevoEmpleado = () => {
+const DetalleEmpleado = () => {
 
   const [show, setShow] = useState(false);
 
@@ -33,14 +29,60 @@ const NuevoEmpleado = () => {
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
 
-  const [datos, setDatos] = useState({})
+  const [datosDocumento, setDatosDocumento] = useState({});
+  const [archivo, setArchivo] = useState();
+
+  const changeFile = (e) => {
+    setArchivo(e);
+  }
+  
+  const onChangeHandlerDocumento = (e)=>{
+    const { name, value } = e.target;
+    setDatosDocumento({
+      ...datosDocumento,
+      [name]: value
+    });
+  }
+
+  const [archivos, setArchivos] = useState([
+    {
+      'Titulo': '',
+      'Fecha': '',
+      'Ver': '',
+    }
+  ])
+
+  const { id } = useParams();
+
+
+  const [datos, setDatos] = useState({
+    'nombre': '',
+    'apellidoPaterno': '',
+    'apellidoMaterno': '',
+    'nss': '',
+    'curp': '',
+    'rfc': '',
+    'calle': '',
+    'numeroExterior': '',
+    'numeroInterior': '',
+    'codigoPostal': '',
+    'municipio': '',
+    'estado': '',
+    'banco': '',
+    'cuenta': '',
+    'clabe': '',
+    'Puesto': '',
+    'sueldo': '',
+    'ingreso': '',
+  });
+
   const [datosTrabajador, setDatosTrabajador] = useState({});
 
   const navigate = useNavigate();
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    await Post('/trabajadores/add', datos);
+    await Post('/trabajadores/edit', datos);
     navigate('/app/empleados');
   };
 
@@ -50,9 +92,21 @@ const NuevoEmpleado = () => {
       ...datos,
       [name]: value
     });
-
   };
 
+
+
+  const onSubmitHandlerDocumento = async(e) => {
+    e.preventDefault();
+
+    const f = new FormData();
+    f.append('file', archivo[0]);
+    f.append('title', datosDocumento.title)
+    console.log(f.get('file'))
+    const res = await axios.post('http://localhost:7799/trabajadores/uploadFile', f);
+    console.log(res)
+    setShow2(false);
+};
 
 
   useEffect(() => {
@@ -61,26 +115,73 @@ const NuevoEmpleado = () => {
         idTrabajador: id
       }
       const trabajador = await Post('/trabajadores/getTrabajador', data);
-      setDatosTrabajador(trabajador.data.data);
-      console.log(trabajador.data.data);
+      const datosDelTrabajador = trabajador.data.data
+      setDatosTrabajador(datosDelTrabajador);
+      setDatos({
+        idTrabajador: datosDelTrabajador._id,
+        nombre: datosDelTrabajador.datosPersonales.nombre,
+        apellidoPaterno: datosDelTrabajador.datosPersonales.apellidoPaterno,
+        apellidoMaterno: datosDelTrabajador.datosPersonales.apellidoMaterno,
+        nss: datosDelTrabajador.datosPersonales.nss,
+        curp: datosDelTrabajador.datosPersonales.curp,
+        rfc: datosDelTrabajador.datosPersonales.rfc,
+        calle: datosDelTrabajador.datosPersonales.direccion.calle,
+        numeroExterior: datosDelTrabajador.datosPersonales.direccion.numeroExterior,
+        numeroInterior: datosDelTrabajador.datosPersonales.direccion.numeroInterior,
+        codigoPostal: datosDelTrabajador.datosPersonales.direccion.codigoPostal,
+        municipio: datosDelTrabajador.datosPersonales.direccion.municipio,
+        estado: datosDelTrabajador.datosPersonales.direccion.estado,
+        banco: datosDelTrabajador.datosBancarios.banco,
+        cuenta: datosDelTrabajador.datosBancarios.cuenta,
+        clabe: datosDelTrabajador.datosBancarios.clabe,
+        Puesto: datosDelTrabajador.datosLaborales.puesto,
+        sueldo: datosDelTrabajador.datosLaborales.sueldo,
+        ingreso: datosDelTrabajador.datosLaborales.ingreso
+      });
+      console.log(datosDelTrabajador.documentos.length>0)
+      setArchivos(datosDelTrabajador.documentos.length>0?
+        datosDelTrabajador.documentos.map(documento => (
+        {
+          "Titulo": documento.titulo,
+          "Fecha": documento.createdAt.slice(0,10),
+          "Ver": documento.URI
+        }))
+        :
+        [{
+          "Titulo": '',
+          "Fecha": '',
+          "Ver": ''
+        }]
+      );
+    //const documentos = datosDelTrabajador.documentos.map(async(documento) => await Get('/trabajadores/downloadFile/'+documento.URI ));
+    //const bufferData =  Buffer.from(documento.data, 'base64');
+    //const blob = new Blob([bufferData], {type: 'application/octet-stream'});                   // Step 3
+    //const fileDownloadUrl = URL.createObjectURL(blob);
+   // setURL2(documentos);      // Step 7
+    //console.log(documentos)
+
+      
+      //const download = await axios.get(documento.data);
+      //console.log(download)
     };
 
     getDatos(id);
 
-  }, []);
+  }, [id]);
 
   return (
     <div>
       <h1>Nuevo Empleado</h1>
       <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '5px' }}>
         <div style={{ width: '25%', height: '400px', float: 'left' }}>
-          <div style={{ width: '200px', height: '200px', backgroundColor: 'gray', position: 'absolute', margin: '45px 0 0 70px', borderRadius: '50%' }}>
-            <div style={{ textAlign: 'center', lineHeight: '150px' }}>
+          <div style={{ width: '200px', height: '200px', backgroundColor: 'gray', position: 'absolute', margin: '45px 0 0 20px', borderRadius: '50%' }}>
+            <div style={{ textAlign: 'center', marginTop: '40%' }}>
               <h3>Añadir Foto</h3>
             </div>
+            <Button variant="primary" onClick={handleShow} style={{marginTop:'50%', marginLeft:'10%'}}>
+          Expediente Digital
+        </Button>
           </div>
-
-
 
         </div>
         <div style={{ width: '30px', height: '400px', float: 'left' }}>
@@ -90,18 +191,19 @@ const NuevoEmpleado = () => {
           <form className="grid-layout" onSubmit={onSubmitHandler}>
             {
               inputsEmpleado.map((input) => (
-                console.log(datosTrabajador[input.name]),
                 < InputForm
+                  key={input.etiqueta}
                   etiqueta={input.etiqueta}
-                  placeholder={input.placeholder}
+                  placeholder={getProp(datosTrabajador, mapa[input.name])}
                   tipo={input.tipo}
                   name={input.name}
                   onChangeHandler={(e) => onChangeHandler(e)}
-                  value={datosTrabajador[input.name]}
+                  value={datos[input.name]}
                 />)
               )}
-            <button className="submitButtonEmpleado" type="submit" style={{ width: '100%' }} >Dar de Alta </button>
+            <button className="submitButtonEmpleado" type="submit" style={{ width: '100%' }} > Guardar </button>
           </form>
+          
         </div>
 
       </div>
@@ -111,11 +213,8 @@ const NuevoEmpleado = () => {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         />
-        <Button variant="primary" onClick={handleShow}>
-          Expediente Digital
-        </Button>
 
         <Modal
           show={show}
@@ -133,13 +232,15 @@ const NuevoEmpleado = () => {
               -Eliminar filtro de la
               -Agregar las opciones de borrar y descargar 
               */}
-            <TableDisplay titles={titles} rawData={data} filtro={false} />
+              {archivos?
+              <TableDisplay titles={titleArchivos} rawData={archivos} filtro={false} paginacion={false} link={'http://localhost:7799/trabajadores/downloadFile/'} target="_blank"/>:
+              null}
           </Modal.Body>
           <Modal.Footer>
                 {/* 
               Tratar de que el botón subir archivo ejecute 2 cambios de estado para hacer el cambio de modal 
               */}
-            <Button variant="primary" onClick={handleClose, handleShow2}>Subir archivo</Button>
+            <Button variant="primary" onClick={()=>{handleClose(); handleShow2();}}>Subir archivo</Button>
           </Modal.Footer>
         </Modal>
 
@@ -154,7 +255,15 @@ const NuevoEmpleado = () => {
           </Modal.Header>
           <Modal.Body>
 
+              <form onSubmit={onSubmitHandlerDocumento}>
+                <label>Nombre del documento:</label>
+                <input type="text" name="title" style={{width:'100%', marginTop:'10px'}} onChange={(e)=>onChangeHandlerDocumento(e)} required />
 
+                <input type="file" name="file" style={{width:'100%', marginTop:'20px'}} onChange={(e)=>changeFile(e.target.files)} required/>
+                
+                <Button variant="primary" type="submit"  style={{width:'100%', marginTop:'20px'}} >Subir Documento</Button>
+
+              </form>
             {/* 
               -Eliminar filtro de la
               -Agregar las opciones de borrar y descargar 
@@ -163,7 +272,7 @@ const NuevoEmpleado = () => {
           </Modal.Body>
           <Modal.Footer>
 
-            <Button variant="primary">Subir archivo</Button>
+
           </Modal.Footer>
         </Modal>
       </>
@@ -175,4 +284,4 @@ const NuevoEmpleado = () => {
 
 }
 
-export default NuevoEmpleado
+export default DetalleEmpleado

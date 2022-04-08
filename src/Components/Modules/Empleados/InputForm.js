@@ -14,7 +14,8 @@ const InputForm = ({etiqueta, placeholder, tipo, name, value={}, onChangeHandler
                     placeholder={placeholder}
                     type={tipo}
                     name={name}
-                    value={value}
+                    
+                    defaultValue={value || ''}
                     onChange={(e) => onChangeHandler(e)}
                 />
 

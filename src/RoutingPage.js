@@ -44,7 +44,7 @@ const RoutingPage = () => {
                             <Route exact path="home" element={<Home />} />
                             <Route exact path="empleados" element={<Empleados />} />
                             <Route path="empleados/nuevo" element={<NuevoEmpleado />} />
-                            <Route path="empleados/detalle" element={<DetalleEmpleado />} />
+                            <Route path="empleados/editar/:id" element={<DetalleEmpleado />} />
 
                             <Route path="nominas" element={<Nominas />} />
                             <Route path="nominas/nuevo" element={<NuevoNomina />} />

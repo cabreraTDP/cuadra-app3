@@ -1,9 +1,12 @@
 import TableDisplay from "../../TableDisplay"
-import { titles , options } from '../../../datafake';
+import {   options } from '../../../datafake';
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 const URL = process.env.REACT_APP_URL_URI;
+
+const titlesEmpleados = ['Nombre','RFC','CURP','NSS','Ver'];
+
 
 const Empleados = () => {
 
@@ -11,7 +14,8 @@ const Empleados = () => {
         "Nombre": "",
         "RFC": "",
         "CURP": "",
-        "NSS": ""
+        "NSS": "",
+        "Ver": ""
     }]);
 
     useEffect(()=>{
@@ -22,13 +26,15 @@ const Empleados = () => {
                     "Nombre": trabajador.datosPersonales.nombre,
                     "RFC": trabajador.datosPersonales.rfc,
                     "CURP": trabajador.datosPersonales.curp,
-                    "NSS": trabajador.datosPersonales.nss
+                    "NSS": trabajador.datosPersonales.nss,
+                    "Ver": trabajador._id
                 } :
                 {
                     "Nombre": '',
                     "RFC": "",
                     "CURP": "",
-                    "NSS": ""
+                    "NSS": "",
+                    "Ver": ""
                 }
             )));
         }
@@ -40,7 +46,7 @@ const Empleados = () => {
     return (
         <div >
             <h1>Empleados</h1>
-            <TableDisplay titles={titles} rawData={dataEmpleados} options={options}/>
+            <TableDisplay titles={titlesEmpleados} rawData={dataEmpleados} options={options} link={'empleados/editar/'} />
         </div>
     )
 }

@@ -71,13 +71,15 @@ const TableDisplay = (props) => {
 
     return (
         <>
-        
+        {props.filter?
         <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
             setGlobalFilter={setGlobalFilter}
             options={options}
-        />
+        />:
+        null
+        }
          <div className="TableContainer">
          <table {...getTableProps()} className="Table">
            <thead >             
@@ -86,7 +88,7 @@ const TableDisplay = (props) => {
              {headerGroups.map(headerGroup => (
                <tr {...headerGroup.getHeaderGroupProps()}>
                  {headerGroup.headers.map(column => (
-                   <th key={column.id}>
+                   <th key={column.id} style={{textAlign:'center'}}>
                      {column.render('Header')}
                      <Icon name="burger" size="15" {...column.getHeaderProps(column.getSortByToggleProps())}/>
                      <span>
@@ -108,8 +110,8 @@ const TableDisplay = (props) => {
                return (
                  <tr {...row.getRowProps()}>
                     {row.cells.map(cell => (
-                   cell.column.Header==='Ver'?
-                    <td {...cell.getCellProps()}><a href={`nominas/ver/${cell.value}`}>Ver</a></td>    :
+                   cell.column.Header==='Ver'|cell.column.Header==='Editar'| cell.column.Header==='Eliminar'?
+                    <td {...cell.getCellProps()}><a href={`${props.link}${cell.value}`} target={props.target?props.target:'_self'}>{cell.column.Header}</a></td>    :
                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td> 
                     ))}
                  </tr>
@@ -118,7 +120,7 @@ const TableDisplay = (props) => {
            </tbody>
          </table>
 
-        
+        {props.paginacion?
         <div className="pagination">
             <span className="total">
               <strong>Total: </strong>{data.length}
@@ -144,7 +146,8 @@ const TableDisplay = (props) => {
               </strong>{' '}
             </span>
             
-        </div>
+        </div>:
+        null}
 
       </div>
     </>

@@ -10,6 +10,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { getProp } from '../../../utils/functions'
 import { mapaDetalleEmpleado as mapa} from '../../../Constants/mapaDetalleEmpleado'
 import axios from 'axios';
+const URL = `${process.env.REACT_APP_URL_URI}`;
 
 
 const titleArchivos = ['Titulo','Fecha','Ver'];
@@ -103,7 +104,7 @@ const DetalleEmpleado = () => {
     f.append('file', archivo[0]);
     f.append('title', datosDocumento.title)
     console.log(f.get('file'))
-    const res = await axios.post('http://localhost:7799/trabajadores/uploadFile', f);
+    const res = await axios.post(`${URL}/trabajadores/uploadFile`, f);
     console.log(res)
     setShow2(false);
 };
@@ -233,7 +234,7 @@ const DetalleEmpleado = () => {
               -Agregar las opciones de borrar y descargar 
               */}
               {archivos?
-              <TableDisplay titles={titleArchivos} rawData={archivos} filtro={false} paginacion={false} link={'http://localhost:7799/trabajadores/downloadFile/'} target="_blank"/>:
+              <TableDisplay titles={titleArchivos} rawData={archivos} filtro={false} paginacion={false} link={`${URL}/trabajadores/downloadFile/`} target="_blank"/>:
               null}
           </Modal.Body>
           <Modal.Footer>

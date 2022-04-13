@@ -15,6 +15,9 @@ import NuevoNomina from "./Components/Modules/Nominas/NuevoNomina"
 import { Fragment } from 'react';
 import DetalleNomina from './Components/Modules/Nominas/DetalleNomina';
 
+import Contabilidad from "./Components/Modules/Contabilidad/Contabilidad";
+
+
 
 const RoutingPage = () => {
     //const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -45,10 +48,11 @@ const RoutingPage = () => {
                             <Route exact path="empleados" element={<Empleados />} />
                             <Route path="empleados/nuevo" element={<NuevoEmpleado />} />
                             <Route path="empleados/editar/:id" element={<DetalleEmpleado />} />
-
                             <Route path="nominas" element={<Nominas />} />
                             <Route path="nominas/nuevo" element={<NuevoNomina />} />
                             <Route path="nominas/ver/:id" element={<DetalleNomina />} />
+                            <Route path="contabilidad" element={<Contabilidad />} />
+
                             <Route path="*" element={<Home />} />
                         </Route>
                     </Route>

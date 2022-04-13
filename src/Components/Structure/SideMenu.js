@@ -12,43 +12,49 @@ const SideMenu = () => {
     /* Set the width of the side navigation to 0 */
     function closeNav() {
         setIsMenuShown(false)
-    } 
+    }
 
     return (
         <div className="container">
-            <div  id="mySidenav" style={{width:isMenuShown?'300%':'100%'}} className="sidenav" onMouseEnter={openNav} onMouseLeave={closeNav}>
+            <div id="mySidenav" style={{ width: isMenuShown ? '300%' : '100%' }} className="sidenav" onMouseEnter={openNav} onMouseLeave={closeNav}>
                 <table>
-                {isMenuShown?
-                <tbody>
-                <tr>
-                <td><Link to="home"><Icon name="star" strokeWidth="3" size="25"/>Incio</Link></td>
-                </tr>
-                <tr>
-                <td><Link to="empleados"><Icon name="user"  strokeWidth="3" size="25"/>Empleados</Link></td>
-                </tr>
-                <tr>
-                <td><Link to="nominas"><Icon name="briefcase"  strokeWidth="3" size="25"/>Nominas</Link></td>
-                </tr>
-                <tr>    
-                <td><Link to=""><Icon name="users" strokeWidth="3" size="25"/>IMSS</Link></td>
-                </tr>
-                </tbody>
-                :
-                <tbody>
-                <tr>
-                    <td><Icon name="star" stroke="#0977F8" strokeWidth="3" size="25"/></td>
-                </tr>
-                <tr>
-                    <td><Icon name="user" stroke="#0977F8" strokeWidth="3" size="25"/></td>
-                    </tr>
-                <tr>
-                    <td><Icon name="briefcase" stroke="#0977F8" strokeWidth="3" size="25"/></td>
-                    </tr>
-                <tr>    
-                    <td><Icon name="users" stroke="#0977F8" strokeWidth="3" size="25"/></td>
-                </tr>
-                </tbody>
-                }
+                    {isMenuShown ?
+                        <tbody>
+                            <tr>
+                                <td><Link to="home"><Icon name="star" strokeWidth="3" size="25" />Incio</Link></td>
+                            </tr>
+                            <tr>
+                                <td><Link to="empleados"><Icon name="user" strokeWidth="3" size="25" />Empleados</Link></td>
+                            </tr>
+                            <tr>
+                                <td><Link to="nominas"><Icon name="briefcase" strokeWidth="3" size="25" />Nominas</Link></td>
+                            </tr>
+                            <tr>
+                                <td><Link to=""><Icon name="users" strokeWidth="3" size="25" />IMSS</Link></td>
+                            </tr>
+                            <tr>
+                                <td><Link to="contabilidad"><Icon name="check" strokeWidth="3" size="25" />Contabilidad</Link></td>
+                            </tr>
+                        </tbody>
+                        :
+                        <tbody>
+                            <tr>
+                                <td><Icon name="star" stroke="#0977F8" strokeWidth="3" size="25" /></td>
+                            </tr>
+                            <tr>
+                                <td><Icon name="user" stroke="#0977F8" strokeWidth="3" size="25" /></td>
+                            </tr>
+                            <tr>
+                                <td><Icon name="briefcase" stroke="#0977F8" strokeWidth="3" size="25" /></td>
+                            </tr>
+                            <tr>
+                                <td><Icon name="users" stroke="#0977F8" strokeWidth="3" size="25" /></td>
+                            </tr>
+                            <tr>
+                                <td><Icon name="check" stroke="#0977F8" strokeWidth="3" size="25" /></td>
+                            </tr>
+                        </tbody>
+                    }
                 </table>
             </div>
         </div>

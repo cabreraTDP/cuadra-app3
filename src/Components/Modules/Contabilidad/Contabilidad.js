@@ -5,8 +5,6 @@ import '../../../CSS/Contabilidad.css'
 import Icon from "awesome-react-icons";
 import { Button, Modal } from 'react-bootstrap';
 import { useState, useEffect } from 'react'
-import { Post } from '../../../utils/axiosUtils'
-import { useNavigate, useParams } from 'react-router-dom'
 
 
 
@@ -39,6 +37,12 @@ const Contabilidad = () => {
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
 
+    const [NuevoRegistro, setNuevoRegistro] = useState(false);
+
+    const CancelarNuevoRegistro = () => setNuevoRegistro(false);
+    const CrearNuevoRegistro = () => setNuevoRegistro(true);
+
+
     const [datosDocumento, setDatosDocumento] = useState({});
     const [archivo, setArchivo] = useState();
 
@@ -54,6 +58,7 @@ const Contabilidad = () => {
         });
     }
 
+    //falta crear funcion que use setArchivos, para el llenado de la tabla de archivos subidps
     const [archivos, setArchivos] = useState([
         {
             'Factura': '',
@@ -62,51 +67,7 @@ const Contabilidad = () => {
             'Tamaño': ''
         }
     ])
-
-    const { id } = useParams();
-
-
-    const [datos, setDatos] = useState({
-        'nombre': '',
-        'apellidoPaterno': '',
-        'apellidoMaterno': '',
-        'nss': '',
-        'curp': '',
-        'rfc': '',
-        'calle': '',
-        'numeroExterior': '',
-        'numeroInterior': '',
-        'codigoPostal': '',
-        'municipio': '',
-        'estado': '',
-        'banco': '',
-        'cuenta': '',
-        'clabe': '',
-        'Puesto': '',
-        'sueldo': '',
-        'ingreso': '',
-    });
-
-    const [datosTrabajador, setDatosTrabajador] = useState({});
-
-    const navigate = useNavigate();
-
-    const onSubmitHandler = async (e) => {
-        e.preventDefault();
-        await Post('/trabajadores/edit', datos);
-        navigate('/app/empleados');
-    };
-
-    const onChangeHandler = async (e) => {
-        const { name, value } = e.target;
-        await setDatos({
-            ...datos,
-            [name]: value
-        });
-    };
-
-
-
+//Crear un segundo metodo parecido a este que procesa el archivo, pero que sólo procese el formulario de registro nuevo
     const onSubmitHandlerDocumento = async (e) => {
         e.preventDefault();
 
@@ -126,7 +87,7 @@ const Contabilidad = () => {
             //Ajustar Dirección y obj json de contabilidad ya que cuenta con información de la tabla trabajadores
             const registros = await axios.get(`${URL}/trabajadores`, { withCredentials: true });
             setDataContabilidad(registros.data.data.map((registro) => (
-                registro.datosPersonales ? {
+                registro.dataContabilidadJson ? {
                     "Fecha Captura": "Rellenar con Info JSON",
                     "Categoría": "Rellenar con Info JSON",
                     "Tipo": "Rellenar con Info JSON",
@@ -159,7 +120,7 @@ const Contabilidad = () => {
             <div id='buscadorOpcion'>
                 <h3 style={{}}>Filtro:</h3>
                 <div id='opciones'>
-                    <Icon name="plus" strokeWidth="3" size="25" color="blue" />
+                    <Icon name="plus" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoRegistro}/>
                     <Icon name="chevron-up" strokeWidth="3" size="25" color="blue" onClick={handleShow} />
                     <Icon name="eye" strokeWidth="3" size="25" color="blue" />
 
@@ -222,7 +183,6 @@ const Contabilidad = () => {
 
                     <form onSubmit={onSubmitHandlerDocumento}>
                         <label>Nombre del documento:</label>
-                        <input type="text" name="title" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
 
                         <input type="file" name="file" style={{ width: '100%', marginTop: '20px' }} onChange={(e) => changeFile(e.target.files)} required />
 
@@ -240,7 +200,46 @@ const Contabilidad = () => {
 
                 </Modal.Footer>
             </Modal>
+            <Modal
+                show={NuevoRegistro}
+                onHide={CancelarNuevoRegistro}
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Agregar Regisro</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+
+                    <form onSubmit={onSubmitHandlerDocumento}>
+                        <label>Categoría:</label>
+                        <input type="text" name="categoria" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
+                        <label>Tipo:</label>
+                        <input type="text" name="tipo" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
+                        <label>Título:</label>
+                        <input type="text" name="titulo" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
+                        <label>Monto:</label>
+                        <input type="number" name="monto" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
+                        <label>Fecha Operación:</label>
+                        <input type="date" name="fechaOperacion" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
+                        <label>Descripción:</label>
+                        <input type="text" name="descripcion" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
+                        <Button variant="primary" type="submit" style={{ width: '100%', marginTop: '20px' }} >Añadir Registro</Button>
+
+                    </form>
+                    {/* 
+              -Eliminar filtro de la
+              -Agregar las opciones de borrar y descargar 
+              */}
+
+                </Modal.Body>
+                <Modal.Footer>
+
+
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }
 export default Contabilidad
+

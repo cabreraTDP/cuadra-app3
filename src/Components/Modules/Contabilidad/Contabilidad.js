@@ -1,10 +1,10 @@
-import React from 'react'
+import { useState, useEffect } from 'react';
+import { Button, Modal } from 'react-bootstrap';
+import React from 'react';
 import TableDisplay from "../../TableDisplay"
 import axios from "axios";
 import '../../../CSS/Contabilidad.css'
 import Icon from "awesome-react-icons";
-import { Button, Modal } from 'react-bootstrap';
-import { useState, useEffect } from 'react'
 
 
 
@@ -13,7 +13,7 @@ const URL = process.env.REACT_APP_URL_URI;
 const titleArchivos = ['Factura', 'Fecha', 'Tipo', 'Tamaño'];
 
 
-const titlesEmpleados = ['Fecha Captura', 'Categoría', 'Tipo', 'Titulo', 'Monto', 'Fecha Operación', 'Descripción', 'Editar'];
+const titlesTablaContabilidad = ['Fecha Captura', 'Categoría', 'Tipo', 'Titulo', 'Monto', 'Fecha Operación', 'Descripción', 'Editar'];
 
 const Contabilidad = () => {
     const [dataContabilidad, setDataContabilidad] = useState([{
@@ -27,15 +27,15 @@ const Contabilidad = () => {
         "Editar": ""
     }]);
 
-    const [show, setShow] = useState(false);
+    const [PDFSAT, setPDFSAT] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const CanelarNuevoArchivoSAT = () => setPDFSAT(false);
+    const CrearNuevoArchivoSAT = () => setPDFSAT(true);
 
-    const [show2, setShow2] = useState(false);
+    const [AñadirArchivo, setAñadirArchivo] = useState(false);
 
-    const handleClose2 = () => setShow2(false);
-    const handleShow2 = () => setShow2(true);
+    const CancelarArchivoSAT = () => setAñadirArchivo(false);
+    const AgregarArchivoSAT = () => setAñadirArchivo(true);
 
     const [NuevoRegistro, setNuevoRegistro] = useState(false);
 
@@ -67,7 +67,7 @@ const Contabilidad = () => {
             'Tamaño': ''
         }
     ])
-//Crear un segundo metodo parecido a este que procesa el archivo, pero que sólo procese el formulario de registro nuevo
+    //Crear un segundo metodo parecido a este que procesa el archivo, pero que sólo procese el formulario de registro nuevo
     const onSubmitHandlerDocumento = async (e) => {
         e.preventDefault();
 
@@ -77,7 +77,7 @@ const Contabilidad = () => {
         console.log(f.get('file'))
         const res = await axios.post(`${URL}/trabajadores/uploadFile`, f);
         console.log(res)
-        setShow2(false);
+        CancelarArchivoSAT(false);
     };
 
 
@@ -87,7 +87,7 @@ const Contabilidad = () => {
             //Ajustar Dirección y obj json de contabilidad ya que cuenta con información de la tabla trabajadores
             const registros = await axios.get(`${URL}/trabajadores`, { withCredentials: true });
             setDataContabilidad(registros.data.data.map((registro) => (
-                registro.dataContabilidadJson ? {
+                registro.dataTrabajadores ? {
                     "Fecha Captura": "Rellenar con Info JSON",
                     "Categoría": "Rellenar con Info JSON",
                     "Tipo": "Rellenar con Info JSON",
@@ -115,13 +115,19 @@ const Contabilidad = () => {
     }, []);
 
     return (
-        <div >
+        <div>
+            <link
+                rel="stylesheet"
+                href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+                integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+                crossOrigin="anonymous"
+            />
             <h1>Contabilidad</h1>
             <div id='buscadorOpcion'>
-                <h3 style={{}}>Filtro:</h3>
+                <h3>Filtro:</h3>
                 <div id='opciones'>
-                    <Icon name="plus" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoRegistro}/>
-                    <Icon name="chevron-up" strokeWidth="3" size="25" color="blue" onClick={handleShow} />
+                    <Icon name="plus" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoRegistro} />
+                    <Icon name="chevron-up" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoArchivoSAT} />
                     <Icon name="eye" strokeWidth="3" size="25" color="blue" />
 
                     <div>
@@ -133,20 +139,14 @@ const Contabilidad = () => {
                     </div>
                     <div>
                         Analisis
-                    </div></div>
-
-
+                    </div>
+                </div>
             </div>
-            <TableDisplay titles={titlesEmpleados} rawData={dataContabilidad} link={'empleados/editar/'} />
-            <link
-                rel="stylesheet"
-                href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-                integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-                crossOrigin="anonymous"
-            />
+            <TableDisplay titles={titlesTablaContabilidad} rawData={dataContabilidad} link={'contabilidad/abrir/'} />
+
             <Modal
-                show={show}
-                onHide={handleClose}
+                show={PDFSAT}
+                onHide={CanelarNuevoArchivoSAT}
                 backdrop="static"
                 keyboard={false}
             >
@@ -155,24 +155,15 @@ const Contabilidad = () => {
                     <Modal.Title>Subir PDF SAT</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-
-
-                    {/* 
-              -Eliminar filtro de la
-              -Agregar las opciones de borrar y descargar 
-              */}
                     {<TableDisplay titles={titleArchivos} rawData={archivos} filtro={false} paginacion={false} link={`${URL}/trabajadores/downloadFile/`} target="_blank" />}
                 </Modal.Body>
                 <Modal.Footer>
-                    {/* 
-              Tratar de que el botón subir archivo ejecute 2 cambios de estado para hacer el cambio de modal 
-              */}
-                    <Button id="btn" variant="primary" onClick={() => { handleClose(); handleShow2(); }}>Subir archivo</Button>
+                    <Button id="btn" variant="primary" onClick={() => { CanelarNuevoArchivoSAT(); AgregarArchivoSAT(); }}>Subir archivo</Button>
                 </Modal.Footer>
             </Modal>
             <Modal
-                show={show2}
-                onHide={handleClose2}
+                show={AñadirArchivo}
+                onHide={CancelarArchivoSAT}
                 backdrop="static"
                 keyboard={false}
             >
@@ -189,11 +180,6 @@ const Contabilidad = () => {
                         <Button variant="primary" type="submit" style={{ width: '100%', marginTop: '20px' }} >Subir Documento</Button>
 
                     </form>
-                    {/* 
-              -Eliminar filtro de la
-              -Agregar las opciones de borrar y descargar 
-              */}
-
                 </Modal.Body>
                 <Modal.Footer>
 
@@ -227,11 +213,6 @@ const Contabilidad = () => {
                         <Button variant="primary" type="submit" style={{ width: '100%', marginTop: '20px' }} >Añadir Registro</Button>
 
                     </form>
-                    {/* 
-              -Eliminar filtro de la
-              -Agregar las opciones de borrar y descargar 
-              */}
-
                 </Modal.Body>
                 <Modal.Footer>
 

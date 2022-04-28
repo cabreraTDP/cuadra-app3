@@ -73,9 +73,8 @@ const Contabilidad = () => {
 
         const f = new FormData();
         f.append('file', archivo[0]);
-        f.append('title', datosDocumento.title)
         console.log(f.get('file'))
-        const res = await axios.post(`${URL}/trabajadores/uploadFile`, f);
+        const res = await axios.post(`${URL}/contabilidad/sat`, f, {withCredentials: true});
         console.log(res)
         CancelarArchivoSAT(false);
     };

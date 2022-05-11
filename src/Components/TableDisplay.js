@@ -14,17 +14,24 @@ const TableDisplay = (props) => {
         () => rawData,[rawData]
       );
     
-    const titlesData = Object.keys(rawData[0])
+ 
 
     let i = 0;
-    const titlesObject = titles.map((title) => {
-        let titleObj = {};
-        titleObj['Header'] = title;
-        titleObj['accessor'] = titlesData[i];
 
-        i++
-        return titleObj
-    })
+    let titlesData = []
+    if(rawData.length > 0){
+      titlesData = Object.keys(rawData[0]);
+    }else{
+      titlesData = Object.keys(titles);
+    }
+    const titlesObject = titles.map((title) => {
+      let titleObj = {};
+      titleObj['Header'] = title;
+      titleObj['accessor'] = titlesData[i];
+
+      i++
+      return titleObj
+    });
 
     /* eslint-disable */
     const columns = React.useMemo(

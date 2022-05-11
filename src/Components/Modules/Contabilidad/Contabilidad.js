@@ -27,10 +27,7 @@ const Contabilidad = () => {
         "Editar": ""
     }]);
 
-    const [PDFSAT, setPDFSAT] = useState(false);
-
-    const CanelarNuevoArchivoSAT = () => setPDFSAT(false);
-    const CrearNuevoArchivoSAT = () => setPDFSAT(true);
+ 
 
     const [AñadirArchivo, setAñadirArchivo] = useState(false);
 
@@ -124,43 +121,49 @@ const Contabilidad = () => {
             />
             <h1>Contabilidad</h1>
             <div id='buscadorOpcion'>
-                <h3>Filtro:</h3>
+                <div id='filtroOpcion'>
+                    <h3>Filtro:</h3>
+                    <select style={{ height: '30px', width:'200px' }}>
+                        <option selected value="enero">Enero</option>
+                        <option value="febrero">Febrero</option>
+                        <option value="marzo">Marzo</option>
+                        <option value="abril">Abril</option>
+                        <option  value="mayo">Mayo</option>
+                        <option value="junio">Junio</option>
+                        <option value="julio">Julio</option>
+                        <option value="agosto">Agosto</option>
+                        <option  value="septiembre">Septiembre</option>
+                        <option value="octubre">Octubre</option>
+                        <option value="noviembre">Noviembre</option>
+                        <option value="diciembre">Diciembre</option>
+                    </select>
+                </div>
+                <div style={{width:'100%'}}>
+                </div>
                 <div id='opciones'>
-                    <Icon name="plus" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoRegistro} />
-                    <Icon name="chevron-up" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoArchivoSAT} />
-                    <Icon name="eye" strokeWidth="3" size="25" color="blue" />
-
-                    <div>
-                        Añadir
+                    <div id='opcion'>
+                        <Icon name="plus" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoRegistro} />
+                        <div>
+                            Añadir
+                        </div>
                     </div>
-
-                    <div>
-                        subir PDF SAT
+                    <div id='opcion'>
+                        <Icon name="chevron-up" strokeWidth="3" size="25" color="blue" onClick={AgregarArchivoSAT} />
+                        <div>
+                            Subir pdf sat
+                        </div>
                     </div>
-                    <div>
-                        Analisis
+                    <div id='opcion'>
+                        <Icon name="eye" strokeWidth="3" size="25" color="blue" />
+                        <div>
+                            Analisis
+                        </div>
                     </div>
                 </div>
             </div>
             <TableDisplay titles={titlesTablaContabilidad} rawData={dataContabilidad} link={'contabilidad/abrir/'} />
 
-            <Modal
-                show={PDFSAT}
-                onHide={CanelarNuevoArchivoSAT}
-                backdrop="static"
-                keyboard={false}
-            >
-                <Modal.Header closeButton>
-                    <Icon name="plus" strokeWidth="3" size="25" color="blue" />
-                    <Modal.Title>Subir PDF SAT</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {<TableDisplay titles={titleArchivos} rawData={archivos} filtro={false} paginacion={false} link={`${URL}/trabajadores/downloadFile/`} target="_blank" />}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button id="btn" variant="primary" onClick={() => { CanelarNuevoArchivoSAT(); AgregarArchivoSAT(); }}>Subir archivo</Button>
-                </Modal.Footer>
-            </Modal>
+           
             <Modal
                 show={AñadirArchivo}
                 onHide={CancelarArchivoSAT}
@@ -175,7 +178,7 @@ const Contabilidad = () => {
                     <form onSubmit={onSubmitHandlerDocumento}>
                         <label>Nombre del documento:</label>
 
-                        <input type="file" name="file" style={{ width: '100%', marginTop: '20px' }} onChange={(e) => changeFile(e.target.files)} required />
+                        <input type="file" name="file" style={{ width: '100%', marginTop: '20px' }} onChange={(e) => changeFile(e.target.files)} accept="application/pdf" required />
 
                         <Button variant="primary" type="submit" style={{ width: '100%', marginTop: '20px' }} >Subir Documento</Button>
 

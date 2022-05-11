@@ -5,27 +5,43 @@ import TableDisplay from "../../TableDisplay"
 import axios from "axios";
 import '../../../CSS/Contabilidad.css'
 import Icon from "awesome-react-icons";
-
+import { Post } from '../../../utils/axiosUtils';
+import {numberToCurrency} from '../../../utils/format';
 
 
 const URL = process.env.REACT_APP_URL_URI;
 
 const titleArchivos = ['Factura', 'Fecha', 'Tipo', 'Tamaño'];
 
+const transformarDatos = (datos) => {
+    const nuevos = datos.map((registro) => (
+        registro ? {
+            "Tipo": registro.tipo?registro.tipo:"",
+            "Categoría": registro.categoria?registro.categoria:"",
+            "Titulo": registro.titulo?registro.titulo:"",
+            "Descripción": registro.descripcion?registro.descripcion:"",
+            "Monto": registro.monto?numberToCurrency(registro.monto):"",
+            "Fecha Operación": registro.fechaOperacion?registro.fechaOperacion.slice(0,10):"",
+            "Editar": "Rellenar con Info JSON"
+        } :
+            {
+                "Fecha Captura": "",
+                "Categoría": "",
+                "Tipo": "",
+                "Titulo": "",
+                "Monto": "",
+                "Fecha Operación": "",
+                "Descripción": "",
+                "Editar": ""
+            }
+        ));
+        return nuevos
+};
 
-const titlesTablaContabilidad = ['Fecha Captura', 'Categoría', 'Tipo', 'Titulo', 'Monto', 'Fecha Operación', 'Descripción', 'Editar'];
+const titlesTablaContabilidad = ['Tipo','Categoría', 'Titulo', 'Descripción','Monto', 'Fecha Operación',  'Editar'];
 
 const Contabilidad = () => {
-    const [dataContabilidad, setDataContabilidad] = useState([{
-        "Fecha Captura": "",
-        "Categoría": "",
-        "Tipo": "",
-        "Titulo": "",
-        "Monto": "",
-        "Fecha Operación": "",
-        "Descripción": "",
-        "Editar": ""
-    }]);
+    const [dataContabilidad, setDataContabilidad] = useState([]);
 
     const [PDFSAT, setPDFSAT] = useState(false);
 
@@ -42,10 +58,26 @@ const Contabilidad = () => {
     const CancelarNuevoRegistro = () => setNuevoRegistro(false);
     const CrearNuevoRegistro = () => setNuevoRegistro(true);
 
-
     const [datosDocumento, setDatosDocumento] = useState({});
     const [archivo, setArchivo] = useState();
+    const [datosOperacion, setDatosOperacion] = useState({})
 
+
+
+    const onSubmitOperacion = async(e) => {
+        e.preventDefault();
+        const nuevosDatos = await Post('/contabilidad/crear', datosOperacion);
+        setDataContabilidad([...dataContabilidad, ...transformarDatos([nuevosDatos.data.data])])
+        setNuevoRegistro(false)
+    };
+
+    const onChangeOperacion = async(e) => {
+        const {name, value} = e.target;
+        setDatosOperacion({
+            ...datosOperacion,
+            [name]: value
+        });
+    };
     const changeFile = (e) => {
         setArchivo(e);
     }
@@ -56,7 +88,17 @@ const Contabilidad = () => {
             ...datosDocumento,
             [name]: value
         });
-    }
+    };
+
+    const onSubmitHandlerDocumento = async (e) => {
+        e.preventDefault();
+
+        const f = new FormData();
+        f.append('file', archivo[0]);
+        const nuevosDatos = await axios.post(`${URL}/contabilidad/sat`, f, {withCredentials: true});
+        setDataContabilidad([...dataContabilidad, ...transformarDatos(nuevosDatos.data.data)])
+        CancelarArchivoSAT(false);
+    };
 
     //falta crear funcion que use setArchivos, para el llenado de la tabla de archivos subidps
     const [archivos, setArchivos] = useState([
@@ -67,46 +109,16 @@ const Contabilidad = () => {
             'Tamaño': ''
         }
     ])
-    //Crear un segundo metodo parecido a este que procesa el archivo, pero que sólo procese el formulario de registro nuevo
-    const onSubmitHandlerDocumento = async (e) => {
-        e.preventDefault();
 
-        const f = new FormData();
-        f.append('file', archivo[0]);
-        console.log(f.get('file'))
-        const res = await axios.post(`${URL}/contabilidad/sat`, f, {withCredentials: true});
-        console.log(res)
-        CancelarArchivoSAT(false);
-    };
 
 
 
     useEffect(() => {
         const getData = async (URL) => {
             //Ajustar Dirección y obj json de contabilidad ya que cuenta con información de la tabla trabajadores
-            const registros = await axios.get(`${URL}/trabajadores`, { withCredentials: true });
-            setDataContabilidad(registros.data.data.map((registro) => (
-                registro.dataTrabajadores ? {
-                    "Fecha Captura": "Rellenar con Info JSON",
-                    "Categoría": "Rellenar con Info JSON",
-                    "Tipo": "Rellenar con Info JSON",
-                    "Titulo": "Rellenar con Info JSON",
-                    "Monto": "Rellenar con Info JSON",
-                    "Fecha Operación": "Rellenar con Info JSON",
-                    "Descripción": "Rellenar con Info JSON",
-                    "Editar": "Rellenar con Info JSON"
-                } :
-                    {
-                        "Fecha Captura": "",
-                        "Categoría": "",
-                        "Tipo": "",
-                        "Titulo": "",
-                        "Monto": "",
-                        "Fecha Operación": "",
-                        "Descripción": "",
-                        "Editar": ""
-                    }
-            )));
+            const registros = await axios.get(`${URL}/contabilidad/operaciones`, { withCredentials: true });
+            const datos = transformarDatos(registros.data.data);
+            if(registros.data.data.length > 0) setDataContabilidad(datos)
         }
         getData(URL).catch(console.error);
 
@@ -125,9 +137,9 @@ const Contabilidad = () => {
             <div id='buscadorOpcion'>
                 <h3>Filtro:</h3>
                 <div id='opciones'>
-                    <Icon name="plus" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoRegistro} />
-                    <Icon name="chevron-up" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoArchivoSAT} />
-                    <Icon name="eye" strokeWidth="3" size="25" color="blue" />
+                    <Icon name="plus" className="button" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoRegistro} />
+                    <Icon name="chevron-up" className="button" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoArchivoSAT} />
+                    <Icon name="eye" className="button" strokeWidth="3" size="25" color="blue" />
 
                     <div>
                         Añadir
@@ -141,28 +153,13 @@ const Contabilidad = () => {
                     </div>
                 </div>
             </div>
-            <TableDisplay titles={titlesTablaContabilidad} rawData={dataContabilidad} link={'contabilidad/abrir/'} />
+
+            <TableDisplay titles={titlesTablaContabilidad} rawData={dataContabilidad} link={'contabilidad/abrir/'} paginacion={true} />
+
 
             <Modal
                 show={PDFSAT}
                 onHide={CanelarNuevoArchivoSAT}
-                backdrop="static"
-                keyboard={false}
-            >
-                <Modal.Header closeButton>
-                    <Icon name="plus" strokeWidth="3" size="25" color="blue" />
-                    <Modal.Title>Subir PDF SAT</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {<TableDisplay titles={titleArchivos} rawData={archivos} filtro={false} paginacion={false} link={`${URL}/trabajadores/downloadFile/`} target="_blank" />}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button id="btn" variant="primary" onClick={() => { CanelarNuevoArchivoSAT(); AgregarArchivoSAT(); }}>Subir archivo</Button>
-                </Modal.Footer>
-            </Modal>
-            <Modal
-                show={AñadirArchivo}
-                onHide={CancelarArchivoSAT}
                 backdrop="static"
                 keyboard={false}
             >
@@ -196,20 +193,33 @@ const Contabilidad = () => {
                 </Modal.Header>
                 <Modal.Body>
 
-                    <form onSubmit={onSubmitHandlerDocumento}>
-                        <label>Categoría:</label>
-                        <input type="text" name="categoria" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
+                    <form onSubmit={onSubmitOperacion}>
+
                         <label>Tipo:</label>
-                        <input type="text" name="tipo" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
+                        <select style={styles.input} name="tipo"  onChange={(e) => onChangeOperacion(e)} required>
+                            <option value="Ingreso" selected="selected">Ingreso</option>
+                            <option value="Gasto">Gasto</option>
+                        </select>
+                        
+                        <label>Categoría:</label>
+                        <select style={styles.input} name="categoria"  onChange={(e) => onChangeOperacion(e)} required>
+                            <option value="Ventas" selected="selected">Ventas</option>
+                            <option value="Sueldos">Sueldos</option>
+                        </select>
+
                         <label>Título:</label>
-                        <input type="text" name="titulo" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
-                        <label>Monto:</label>
-                        <input type="number" name="monto" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
-                        <label>Fecha Operación:</label>
-                        <input type="date" name="fechaOperacion" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
+                        <input type="text" name="titulo" style={styles.input} onChange={(e) => onChangeOperacion(e)} required />
+                        
                         <label>Descripción:</label>
-                        <input type="text" name="descripcion" style={{ width: '100%', marginTop: '10px' }} onChange={(e) => onChangeHandlerDocumento(e)} required />
-                        <Button variant="primary" type="submit" style={{ width: '100%', marginTop: '20px' }} >Añadir Registro</Button>
+                        <input type="text" name="descripcion" style={styles.input} onChange={(e) => onChangeOperacion(e)} required />
+
+                        <label>Monto:</label>
+                        <input type="number" name="monto" style={styles.input} onChange={(e) => onChangeOperacion(e)} required />
+
+                        <label>Fecha Operación:</label>
+                        <input type="date" name="fechaOperacion" style={styles.input} onChange={(e) => onChangeOperacion(e)} required />
+                        
+                        <Button variant="primary" type="submit" >Añadir Registro</Button>
 
                     </form>
                 </Modal.Body>
@@ -223,3 +233,12 @@ const Contabilidad = () => {
 }
 export default Contabilidad
 
+const styles = {
+    input: {
+        width: '100%',
+        marginBottom: 15,
+        border: '1px black solid',
+        height: 35,
+        padding: 5
+    }
+}

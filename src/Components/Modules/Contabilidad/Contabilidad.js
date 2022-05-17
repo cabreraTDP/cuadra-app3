@@ -116,6 +116,12 @@ const Contabilidad = () => {
         });
     };
 
+    const onDeleteOperacion = async(id) => {
+        const eliminar = await axios.post(`${URL}/contabilidad/eliminar`, {id},{ withCredentials: true });
+        setDataContabilidad(dataContabilidad.filter((operacion) => operacion.Editar._id !== id));
+        setEditarRegistro(false)
+    };
+
     useEffect(() => {
         const getData = async (URL) => {
             //Ajustar Dirección y obj json de contabilidad ya que cuenta con información de la tabla trabajadores
@@ -133,7 +139,7 @@ const Contabilidad = () => {
         if(filtroMes==='all'){
             setDataFiltered(dataContabilidad)
         }else{
-            setDataFiltered(dataContabilidad.filter((operacion) => moment(operacion["Fecha Operación"],"DD-MM-YYYY").month()+1 == filtroMes));
+            setDataFiltered(dataContabilidad.filter((operacion) => moment(operacion["Fecha Operación"],"DD-MM-YYYY").month()+1 === Number(filtroMes)));
         };
     }, [dataContabilidad,filtroMes]);
 
@@ -310,7 +316,8 @@ const Contabilidad = () => {
                         <label>Fecha Operación:</label>
                         <input type="date" name="fechaOperacion" value={moment(registroEnEdicion.fechaOperacion).format('YYYY-MM-DD')} style={styles.input} onChange={(e) => onChangeEditar(e)} required />
                         
-                        <Button variant="primary" type="submit" >Añadir Registro</Button>
+                        <Button variant="primary" type="submit" >Guardar Registro</Button>
+                        <Button style={{marginLeft:20}} variant="warning" onClick={()=>onDeleteOperacion(registroEnEdicion._id)} >Eliminar Registro</Button>
 
                     </form>
                 </Modal.Body>

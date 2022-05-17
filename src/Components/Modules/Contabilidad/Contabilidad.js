@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, ModalFooter } from 'react-bootstrap';
 import React from 'react';
 import TableDisplay from "../../TableDisplay"
 import axios from "axios";
@@ -7,6 +7,7 @@ import '../../../CSS/Contabilidad.css'
 import Icon from "awesome-react-icons";
 import { Post } from '../../../utils/axiosUtils';
 import {numberToCurrency} from '../../../utils/format';
+import moment from 'moment';
 
 
 const URL = process.env.REACT_APP_URL_URI;
@@ -21,8 +22,8 @@ const transformarDatos = (datos) => {
             "Titulo": registro.titulo?registro.titulo:"",
             "Descripción": registro.descripcion?registro.descripcion:"",
             "Monto": registro.monto?numberToCurrency(registro.monto):"",
-            "Fecha Operación": registro.fechaOperacion?registro.fechaOperacion.slice(0,10):"",
-            "Editar": "Rellenar con Info JSON"
+            "Fecha Operación": registro.fechaOperacion?moment(registro.fechaOperacion).format("DD-MM-YYYY"):"",
+            "Editar": registro
         } :
             {
                 "Fecha Captura": "",
@@ -42,8 +43,7 @@ const titlesTablaContabilidad = ['Tipo','Categoría', 'Titulo', 'Descripción','
 
 const Contabilidad = () => {
     const [dataContabilidad, setDataContabilidad] = useState([]);
-
- 
+    const [dataFiltered, setDataFiltered] = useState([]);
 
     const [AñadirArchivo, setAñadirArchivo] = useState(false);
 
@@ -55,11 +55,19 @@ const Contabilidad = () => {
     const CancelarNuevoRegistro = () => setNuevoRegistro(false);
     const CrearNuevoRegistro = () => setNuevoRegistro(true);
 
-    const [datosDocumento, setDatosDocumento] = useState({});
+    const [editarRegistro, setEditarRegistro] = useState(false);
+    const CancelarEditarRegistro = () => setEditarRegistro(false);
+    const EditarRegistro = () => setEditarRegistro(true);
+    const [registroEnEdicion, setRegistroEnEdicion] = useState({});
+
     const [archivo, setArchivo] = useState();
     const [datosOperacion, setDatosOperacion] = useState({})
 
+    const [filtroMes, setFiltroMes] = useState('all');
 
+    const funcionFiltroMes = (e) => {
+        setFiltroMes(e.target.value);
+    };
 
     const onSubmitOperacion = async(e) => {
         e.preventDefault();
@@ -79,17 +87,8 @@ const Contabilidad = () => {
         setArchivo(e);
     }
 
-    const onChangeHandlerDocumento = (e) => {
-        const { name, value } = e.target;
-        setDatosDocumento({
-            ...datosDocumento,
-            [name]: value
-        });
-    };
-
     const onSubmitHandlerDocumento = async (e) => {
         e.preventDefault();
-
         const f = new FormData();
         f.append('file', archivo[0]);
         const nuevosDatos = await axios.post(`${URL}/contabilidad/sat`, f, {withCredentials: true});
@@ -97,30 +96,46 @@ const Contabilidad = () => {
         CancelarArchivoSAT(false);
     };
 
-    //falta crear funcion que use setArchivos, para el llenado de la tabla de archivos subidps
-    const [archivos, setArchivos] = useState([
-        {
-            'Factura': '',
-            'Fecha': '',
-            'Tipo': '',
-            'Tamaño': ''
-        }
-    ])
+    const onButtonFunction = (value) => {
+        EditarRegistro()
+        setRegistroEnEdicion(value)
+    };
 
+    const onSubmitEditar = async(e) => {
+        e.preventDefault();
+        const nuevosDatos = await Post('/contabilidad/editar', registroEnEdicion);
+        setDataContabilidad([...dataContabilidad.filter((operacion) => operacion.Editar._id !== registroEnEdicion._id), ...transformarDatos([nuevosDatos.data.data])])
+        setEditarRegistro(false)
+    };
 
-
+    const onChangeEditar = async(e) => {
+        const {name, value} = e.target;
+        setRegistroEnEdicion({
+            ...registroEnEdicion,
+            [name]: value
+        });
+    };
 
     useEffect(() => {
         const getData = async (URL) => {
             //Ajustar Dirección y obj json de contabilidad ya que cuenta con información de la tabla trabajadores
             const registros = await axios.get(`${URL}/contabilidad/operaciones`, { withCredentials: true });
             const datos = transformarDatos(registros.data.data);
-            if(registros.data.data.length > 0) setDataContabilidad(datos)
+            if(registros.data.data.length > 0){
+                setDataContabilidad(datos)
+                setDataFiltered(datos)
+            }
         }
         getData(URL).catch(console.error);
-
-
     }, []);
+
+    useEffect(() => {
+        if(filtroMes==='all'){
+            setDataFiltered(dataContabilidad)
+        }else{
+            setDataFiltered(dataContabilidad.filter((operacion) => moment(operacion["Fecha Operación"],"DD-MM-YYYY").month()+1 == filtroMes));
+        };
+    }, [dataContabilidad,filtroMes]);
 
     return (
         <div>
@@ -134,30 +149,30 @@ const Contabilidad = () => {
             <div id='buscadorOpcion'>
                 <div id='filtroOpcion'>
                     <h3>Filtro:</h3>
-                    <select style={{ height: '30px', width:'200px' }}>
-                        <option selected value="enero">Enero</option>
-                        <option value="febrero">Febrero</option>
-                        <option value="marzo">Marzo</option>
-                        <option value="abril">Abril</option>
-                        <option  value="mayo">Mayo</option>
-                        <option value="junio">Junio</option>
-                        <option value="julio">Julio</option>
-                        <option value="agosto">Agosto</option>
-                        <option  value="septiembre">Septiembre</option>
-                        <option value="octubre">Octubre</option>
-                        <option value="noviembre">Noviembre</option>
-                        <option value="diciembre">Diciembre</option>
+                    <select style={{ height: '30px', width:'200px' }} value={filtroMes} onChange={(e)=> funcionFiltroMes(e)}>
+                        <option selected value="all">Todos los meses...</option>
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option  value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option  value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
                     </select>
                 </div>
                 <div style={{width:'100%'}}>
                 </div>
                 <div id='opciones'>
-                    <Icon name="plus" className="button" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoRegistro} />
-                    <Icon name="chevron-up" className="button" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoArchivoSAT} />
-                    <Icon name="eye" className="button" strokeWidth="3" size="25" color="blue" />
-
-                    <div>
-                        Añadir
+                    <div id='opcion'>
+                        <Icon name="plus" strokeWidth="3" size="25" color="blue" onClick={CrearNuevoRegistro} />
+                        <div>
+                            Añadir
+                        </div>
                     </div>
                     <div id='opcion'>
                         <Icon name="chevron-up" strokeWidth="3" size="25" color="blue" onClick={AgregarArchivoSAT} />
@@ -174,12 +189,20 @@ const Contabilidad = () => {
                 </div>
             </div>
 
-            <TableDisplay titles={titlesTablaContabilidad} rawData={dataContabilidad} link={'contabilidad/abrir/'} paginacion={true} />
+            <TableDisplay 
+                titles={titlesTablaContabilidad} 
+                rawData={dataFiltered} 
+                link={'contabilidad/'} 
+                type={'button'} 
+                buttonFunction={onButtonFunction} 
+                paginacion={true} 
+            />
 
 
+           
             <Modal
-                show={PDFSAT}
-                onHide={CanelarNuevoArchivoSAT}
+                show={AñadirArchivo}
+                onHide={CancelarArchivoSAT}
                 backdrop="static"
                 keyboard={false}
             >
@@ -248,6 +271,55 @@ const Contabilidad = () => {
 
                 </Modal.Footer>
             </Modal>
+
+            {/*EDITAR TRANSACCIÓN */}
+            <Modal
+                show={editarRegistro}
+                onHide={CancelarEditarRegistro}
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Editar Regisro</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+
+                    <form onSubmit={onSubmitEditar}>
+
+                        <label>Tipo:</label>
+                        <select style={styles.input} value={registroEnEdicion.tipo} name="tipo"  onChange={(e) => onChangeEditar(e)} required>
+                            <option value="Ingreso" >Ingreso</option>
+                            <option value="Gasto">Gasto</option>
+                        </select>
+                        
+                        <label>Categoría:</label>
+                        <select style={styles.input} value={registroEnEdicion.categoria}  name="categoria"  onChange={(e) => onChangeEditar(e)} required>
+                            <option value="Ventas" >Ventas</option>
+                            <option value="Sueldos">Sueldos</option>
+                        </select>
+
+                        <label>Título:</label>
+                        <input type="text" name="titulo" value={registroEnEdicion.titulo} style={styles.input} onChange={(e) => onChangeEditar(e)} required />
+                        
+                        <label>Descripción:</label>
+                        <input type="text" name="descripcion" value={registroEnEdicion.descripcion} style={styles.input} onChange={(e) => onChangeEditar(e)} required />
+
+                        <label>Monto:</label>
+                        <input type="number" name="monto" value={registroEnEdicion.monto} style={styles.input} onChange={(e) => onChangeEditar(e)} required />
+
+                        <label>Fecha Operación:</label>
+                        <input type="date" name="fechaOperacion" value={moment(registroEnEdicion.fechaOperacion).format('YYYY-MM-DD')} style={styles.input} onChange={(e) => onChangeEditar(e)} required />
+                        
+                        <Button variant="primary" type="submit" >Añadir Registro</Button>
+
+                    </form>
+                </Modal.Body>
+                <ModalFooter>
+                
+                </ModalFooter>
+            </Modal>
+
+
         </div>
     )
 }

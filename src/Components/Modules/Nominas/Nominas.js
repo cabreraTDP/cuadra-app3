@@ -3,6 +3,7 @@ import { options } from '../../../datafake';
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
+import moment from "moment";
 
 const URL = process.env.REACT_APP_URL_URI;
 
@@ -23,8 +24,8 @@ const Nominas = () => {
             const nominas = await axios.get(`${URL}/nominas`, {withCredentials: true});
             setDataNominas(nominas.data.data.map((nomina) => (
                 nomina.detalle ? {
-                    "Periodo Inicio": nomina.detalle.periodoInicio.slice(0,10),
-                    "Periodo Fin": nomina.detalle.periodoFin.slice(0,10),
+                    "Periodo Inicio": moment(nomina.detalle.periodoInicio).format("DD-MM-YYYY"),
+                    "Periodo Fin": moment(nomina.detalle.periodoFin).format("DD-MM-YYYY"),
                     "Semana": nomina.detalle.semana,
                     "Total": nomina.detalle.total,
                     "Ver": nomina._id
@@ -45,7 +46,12 @@ const Nominas = () => {
     return (
         <div >
             <h1>Nominas</h1>
-            <TableDisplay titles={titlesNomina} rawData={dataNominas} options={options} link={'nominas/ver/'} />
+            <TableDisplay 
+                titles={titlesNomina} 
+                filter={true} 
+                rawData={dataNominas} 
+                options={options} 
+                link={'nominas/ver/'} />
         </div>
     )
 }

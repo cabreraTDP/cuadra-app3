@@ -46,7 +46,12 @@ const Empleados = () => {
     return (
         <div >
             <h1>Empleados</h1>
-            <TableDisplay titles={titlesEmpleados} filter={true} rawData={dataEmpleados} options={options} link={'empleados/editar/'} />
+            <TableDisplay 
+                titles={titlesEmpleados} 
+                filter={true} 
+                rawData={dataEmpleados} 
+                options={options} 
+                link={'empleados/editar/'} />
         </div>
     )
 }

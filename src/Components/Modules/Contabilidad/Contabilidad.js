@@ -9,6 +9,11 @@ import { Post } from '../../../utils/axiosUtils';
 import {numberToCurrency} from '../../../utils/format';
 import moment from 'moment';
 
+import ExportExcel from "react-export-excel";
+
+const ExcelFile = ExportExcel.ExcelFile;
+const ExcelSheet = ExportExcel.ExcelSheet;
+const ExcelColumn = ExportExcel.ExcelColumn;
 
 const URL = process.env.REACT_APP_URL_URI;
 
@@ -40,6 +45,21 @@ const transformarDatos = (datos) => {
 };
 
 const titlesTablaContabilidad = ['Tipo','Categoría', 'Titulo', 'Descripción','Monto', 'Fecha Operación',  'Editar'];
+
+const ExportarExcel = ({datos}) => {
+    return(
+    <ExcelFile element={<Icon name="arrow-down" strokeWidth="3" size="25" color="blue" />} filename="Contabilidad">
+        <ExcelSheet data={datos} name="Operaciones">
+            <ExcelColumn label="Tipo" value="Tipo"/>
+            <ExcelColumn label="Categoría" value="Categoría"/>
+            <ExcelColumn label="Titulo" value="Titulo"/>
+            <ExcelColumn label="Descripción" value="Descripción"/>
+            <ExcelColumn label="Monto" value="Monto"/>
+            <ExcelColumn label="Fecha Operación" value="Fecha Operación"/>
+        </ExcelSheet>
+    </ExcelFile>
+    )
+}
 
 const Contabilidad = () => {
     const [dataContabilidad, setDataContabilidad] = useState([]);
@@ -187,9 +207,15 @@ const Contabilidad = () => {
                         </div>
                     </div>
                     <div id='opcion'>
-                        <Icon name="eye" strokeWidth="3" size="25" color="blue" />
+                        <Icon name="activity" strokeWidth="3" size="25" color="blue" />
                         <div>
                             Analisis
+                        </div>
+                    </div>
+                    <div id='opcion'>
+                        <ExportarExcel datos={dataFiltered}/>
+                        <div>
+                            Exportar a Excel
                         </div>
                     </div>
                 </div>

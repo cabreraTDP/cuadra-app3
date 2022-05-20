@@ -6,7 +6,7 @@ import axios from "axios";
 import '../../../CSS/Contabilidad.css'
 import Icon from "awesome-react-icons";
 import { Post } from '../../../utils/axiosUtils';
-import { numberToCurrency } from '../../../utils/format';
+import {numberToCurrency} from '../../../utils/format';
 import moment from 'moment';
 
 import ExportExcel from "react-export-excel";
@@ -22,12 +22,12 @@ const titleArchivos = ['Factura', 'Fecha', 'Tipo', 'Tamaño'];
 const transformarDatos = (datos) => {
     const nuevos = datos.map((registro) => (
         registro ? {
-            "Tipo": registro.tipo ? registro.tipo : "",
-            "Categoría": registro.categoria ? registro.categoria : "",
-            "Titulo": registro.titulo ? registro.titulo : "",
-            "Descripción": registro.descripcion ? registro.descripcion : "",
-            "Monto": registro.monto ? numberToCurrency(registro.monto) : "",
-            "Fecha Operación": registro.fechaOperacion ? moment(registro.fechaOperacion).format("DD-MM-YYYY") : "",
+            "Tipo": registro.tipo?registro.tipo:"",
+            "Categoría": registro.categoria?registro.categoria:"",
+            "Titulo": registro.titulo?registro.titulo:"",
+            "Descripción": registro.descripcion?registro.descripcion:"",
+            "Monto": registro.monto?numberToCurrency(registro.monto):"",
+            "Fecha Operación": registro.fechaOperacion?moment(registro.fechaOperacion).format("DD-MM-YYYY"):"",
             "Editar": registro
         } :
             {
@@ -40,11 +40,11 @@ const transformarDatos = (datos) => {
                 "Descripción": "",
                 "Editar": ""
             }
-    ));
-    return nuevos
+        ));
+        return nuevos
 };
 
-const titlesTablaContabilidad = ['Tipo', 'Categoría', 'Titulo', 'Descripción', 'Monto', 'Fecha Operación', 'Editar'];
+const titlesTablaContabilidad = ['Tipo','Categoría', 'Titulo', 'Descripción','Monto', 'Fecha Operación',  'Editar'];
 
 const ExportarExcel = ({datos}) => {
     return(
@@ -81,6 +81,7 @@ const Contabilidad = () => {
     const [registroEnEdicion, setRegistroEnEdicion] = useState({});
 
     const [archivo, setArchivo] = useState();
+    const [tipoArchivo, setTipoArchivo] = useState();
     const [datosOperacion, setDatosOperacion] = useState({})
 
     const [filtroMes, setFiltroMes] = useState('all');
@@ -89,20 +90,24 @@ const Contabilidad = () => {
         setFiltroMes(e.target.value);
     };
 
-    const onSubmitOperacion = async (e) => {
+    const onSubmitOperacion = async(e) => {
         e.preventDefault();
         const nuevosDatos = await Post('/contabilidad/crear', datosOperacion);
         setDataContabilidad([...dataContabilidad, ...transformarDatos([nuevosDatos.data.data])])
         setNuevoRegistro(false)
     };
 
-    const onChangeOperacion = async (e) => {
-        const { name, value } = e.target;
+    const onChangeOperacion = async(e) => {
+        const {name, value} = e.target;
         setDatosOperacion({
             ...datosOperacion,
             [name]: value
         });
     };
+    
+    const onChangeTipoArchivo = async(e) => {
+        setTipoArchivo(e.target.value)
+    }
     const changeFile = (e) => {
         setArchivo(e);
     }
@@ -111,7 +116,8 @@ const Contabilidad = () => {
         e.preventDefault();
         const f = new FormData();
         f.append('file', archivo[0]);
-        const nuevosDatos = await axios.post(`${URL}/contabilidad/sat`, f, { withCredentials: true });
+        f.append('tipo',tipoArchivo)
+        const nuevosDatos = await axios.post(`${URL}/contabilidad/sat`, f, {withCredentials: true});
         setDataContabilidad([...dataContabilidad, ...transformarDatos(nuevosDatos.data.data)])
         CancelarArchivoSAT(false);
     };
@@ -121,23 +127,23 @@ const Contabilidad = () => {
         setRegistroEnEdicion(value)
     };
 
-    const onSubmitEditar = async (e) => {
+    const onSubmitEditar = async(e) => {
         e.preventDefault();
         const nuevosDatos = await Post('/contabilidad/editar', registroEnEdicion);
         setDataContabilidad([...dataContabilidad.filter((operacion) => operacion.Editar._id !== registroEnEdicion._id), ...transformarDatos([nuevosDatos.data.data])])
         setEditarRegistro(false)
     };
 
-    const onChangeEditar = async (e) => {
-        const { name, value } = e.target;
+    const onChangeEditar = async(e) => {
+        const {name, value} = e.target;
         setRegistroEnEdicion({
             ...registroEnEdicion,
             [name]: value
         });
     };
 
-    const onDeleteOperacion = async (id) => {
-        const eliminar = await axios.post(`${URL}/contabilidad/eliminar`, { id }, { withCredentials: true });
+    const onDeleteOperacion = async(id) => {
+        const eliminar = await axios.post(`${URL}/contabilidad/eliminar`, {id},{ withCredentials: true });
         setDataContabilidad(dataContabilidad.filter((operacion) => operacion.Editar._id !== id));
         setEditarRegistro(false)
     };
@@ -147,7 +153,7 @@ const Contabilidad = () => {
             //Ajustar Dirección y obj json de contabilidad ya que cuenta con información de la tabla trabajadores
             const registros = await axios.get(`${URL}/contabilidad/operaciones`, { withCredentials: true });
             const datos = transformarDatos(registros.data.data);
-            if (registros.data.data.length > 0) {
+            if(registros.data.data.length > 0){
                 setDataContabilidad(datos)
                 setDataFiltered(datos)
             }
@@ -156,12 +162,12 @@ const Contabilidad = () => {
     }, []);
 
     useEffect(() => {
-        if (filtroMes === 'all') {
+        if(filtroMes==='all'){
             setDataFiltered(dataContabilidad)
-        } else {
-            setDataFiltered(dataContabilidad.filter((operacion) => moment(operacion["Fecha Operación"], "DD-MM-YYYY").month() + 1 === Number(filtroMes)));
+        }else{
+            setDataFiltered(dataContabilidad.filter((operacion) => moment(operacion["Fecha Operación"],"DD-MM-YYYY").month()+1 === Number(filtroMes)));
         };
-    }, [dataContabilidad, filtroMes]);
+    }, [dataContabilidad,filtroMes]);
 
     return (
         <div>
@@ -175,23 +181,23 @@ const Contabilidad = () => {
             <div id='buscadorOpcion'>
                 <div id='filtroOpcion'>
                     <h3>Filtro:</h3>
-                    <select style={{ height: '30px', width: '200px' }} value={filtroMes} onChange={(e) => funcionFiltroMes(e)}>
+                    <select style={{ height: '30px', width:'200px' }} value={filtroMes} onChange={(e)=> funcionFiltroMes(e)}>
                         <option selected value="all">Todos los meses...</option>
                         <option value="1">Enero</option>
                         <option value="2">Febrero</option>
                         <option value="3">Marzo</option>
                         <option value="4">Abril</option>
-                        <option value="5">Mayo</option>
+                        <option  value="5">Mayo</option>
                         <option value="6">Junio</option>
                         <option value="7">Julio</option>
                         <option value="8">Agosto</option>
-                        <option value="9">Septiembre</option>
+                        <option  value="9">Septiembre</option>
                         <option value="10">Octubre</option>
                         <option value="11">Noviembre</option>
                         <option value="12">Diciembre</option>
                     </select>
                 </div>
-                <div style={{ width: '100%' }}>
+                <div style={{width:'100%'}}>
                 </div>
                 <div id='opciones'>
                     <div id='opcion'>
@@ -221,17 +227,17 @@ const Contabilidad = () => {
                 </div>
             </div>
 
-            <TableDisplay
-                titles={titlesTablaContabilidad}
-                rawData={dataFiltered}
-                link={'contabilidad/'}
-                type={'button'}
-                buttonFunction={onButtonFunction}
-                paginacion={true}
+            <TableDisplay 
+                titles={titlesTablaContabilidad} 
+                rawData={dataFiltered} 
+                link={'contabilidad/'} 
+                type={'button'} 
+                buttonFunction={onButtonFunction} 
+                paginacion={true} 
             />
 
 
-
+           
             <Modal
                 show={AñadirArchivo}
                 onHide={CancelarArchivoSAT}
@@ -244,13 +250,14 @@ const Contabilidad = () => {
                 <Modal.Body>
 
                     <form onSubmit={onSubmitHandlerDocumento}>
-                        <label>Categoría:</label>
-                        <select style={{ height: '30px', width: '200px' }} value={filtroMes} onChange={(e) => funcionFiltroMes(e)}>
-                            <option selected value="all">Opciones</option>
-                            <option value="1">Facturas Emitidas</option>
-                            <option value="2">Facturas Recibidas</option>
-                            <option value="3">Impuestos</option>
-                            <option value="social">IMSS</option>
+
+                        <label>Tipo de Documento:</label>
+                        <select style={styles.input} name="tipo"  onChange={(e) => onChangeTipoArchivo(e)} required>
+                            <option value="emitida" selected="selected">Facturas Emitidas</option>
+                            <option value="recibida">Facturas Recibidas</option>
+                            <option value="impuestos">ISR & IVA</option>
+                            <option value="social">IMSS - Infonavit</option>
+
                         </select>
 
                         <input type="file" name="file" style={{ width: '100%', marginTop: '20px' }} onChange={(e) => changeFile(e.target.files)} accept="application/pdf" required />
@@ -278,20 +285,20 @@ const Contabilidad = () => {
                     <form onSubmit={onSubmitOperacion}>
 
                         <label>Tipo:</label>
-                        <select style={styles.input} name="tipo" onChange={(e) => onChangeOperacion(e)} required>
+                        <select style={styles.input} name="tipo"  onChange={(e) => onChangeOperacion(e)} required>
                             <option value="Ingreso" selected="selected">Ingreso</option>
                             <option value="Gasto">Gasto</option>
                         </select>
-
+                        
                         <label>Categoría:</label>
-                        <select style={styles.input} name="categoria" onChange={(e) => onChangeOperacion(e)} required>
+                        <select style={styles.input} name="categoria"  onChange={(e) => onChangeOperacion(e)} required>
                             <option value="Ventas" selected="selected">Ventas</option>
                             <option value="Sueldos">Sueldos</option>
                         </select>
 
                         <label>Título:</label>
                         <input type="text" name="titulo" style={styles.input} onChange={(e) => onChangeOperacion(e)} required />
-
+                        
                         <label>Descripción:</label>
                         <input type="text" name="descripcion" style={styles.input} onChange={(e) => onChangeOperacion(e)} required />
 
@@ -300,7 +307,7 @@ const Contabilidad = () => {
 
                         <label>Fecha Operación:</label>
                         <input type="date" name="fechaOperacion" style={styles.input} onChange={(e) => onChangeOperacion(e)} required />
-
+                        
                         <Button variant="primary" type="submit" >Añadir Registro</Button>
 
                     </form>
@@ -326,20 +333,20 @@ const Contabilidad = () => {
                     <form onSubmit={onSubmitEditar}>
 
                         <label>Tipo:</label>
-                        <select style={styles.input} value={registroEnEdicion.tipo} name="tipo" onChange={(e) => onChangeEditar(e)} required>
+                        <select style={styles.input} value={registroEnEdicion.tipo} name="tipo"  onChange={(e) => onChangeEditar(e)} required>
                             <option value="Ingreso" >Ingreso</option>
                             <option value="Gasto">Gasto</option>
                         </select>
-
+                        
                         <label>Categoría:</label>
-                        <select style={styles.input} value={registroEnEdicion.categoria} name="categoria" onChange={(e) => onChangeEditar(e)} required>
+                        <select style={styles.input} value={registroEnEdicion.categoria}  name="categoria"  onChange={(e) => onChangeEditar(e)} required>
                             <option value="Ventas" >Ventas</option>
                             <option value="Sueldos">Sueldos</option>
                         </select>
 
                         <label>Título:</label>
                         <input type="text" name="titulo" value={registroEnEdicion.titulo} style={styles.input} onChange={(e) => onChangeEditar(e)} required />
-
+                        
                         <label>Descripción:</label>
                         <input type="text" name="descripcion" value={registroEnEdicion.descripcion} style={styles.input} onChange={(e) => onChangeEditar(e)} required />
 
@@ -348,14 +355,14 @@ const Contabilidad = () => {
 
                         <label>Fecha Operación:</label>
                         <input type="date" name="fechaOperacion" value={moment(registroEnEdicion.fechaOperacion).format('YYYY-MM-DD')} style={styles.input} onChange={(e) => onChangeEditar(e)} required />
-
+                        
                         <Button variant="primary" type="submit" >Guardar Registro</Button>
-                        <Button style={{ marginLeft: 20 }} variant="warning" onClick={() => onDeleteOperacion(registroEnEdicion._id)} >Eliminar Registro</Button>
+                        <Button style={{marginLeft:20}} variant="warning" onClick={()=>onDeleteOperacion(registroEnEdicion._id)} >Eliminar Registro</Button>
 
                     </form>
                 </Modal.Body>
                 <ModalFooter>
-
+                
                 </ModalFooter>
             </Modal>
 

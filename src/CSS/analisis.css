@@ -1,0 +1,19 @@
+#fecha {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+#contenido {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+#separador {
+    display: grid;
+    grid-template-rows: auto auto;
+    background-color: white;
+}
+#utilidad{
+    border: 2px solid blue;
+    border-radius: 7px;
+}

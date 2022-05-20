@@ -16,6 +16,8 @@ import { Fragment } from 'react';
 import DetalleNomina from './Components/Modules/Nominas/DetalleNomina';
 
 import Contabilidad from "./Components/Modules/Contabilidad/Contabilidad";
+import Analisis from "./Components/Modules/Contabilidad/Analisis";
+
 
 
 
@@ -52,7 +54,7 @@ const RoutingPage = () => {
                             <Route path="nominas/nuevo" element={<NuevoNomina />} />
                             <Route path="nominas/ver/:id" element={<DetalleNomina />} />
                             <Route path="contabilidad" element={<Contabilidad />} />
-
+                            <Route path="contabilidad/analisis" element={<Analisis />} />
                             <Route path="*" element={<Home />} />
                         </Route>
                     </Route>

@@ -81,6 +81,7 @@ const Contabilidad = () => {
     const [registroEnEdicion, setRegistroEnEdicion] = useState({});
 
     const [archivo, setArchivo] = useState();
+    const [tipoArchivo, setTipoArchivo] = useState();
     const [datosOperacion, setDatosOperacion] = useState({})
 
     const [filtroMes, setFiltroMes] = useState('all');
@@ -103,6 +104,10 @@ const Contabilidad = () => {
             [name]: value
         });
     };
+    
+    const onChangeTipoArchivo = async(e) => {
+        setTipoArchivo(e.target.value)
+    }
     const changeFile = (e) => {
         setArchivo(e);
     }
@@ -111,6 +116,7 @@ const Contabilidad = () => {
         e.preventDefault();
         const f = new FormData();
         f.append('file', archivo[0]);
+        f.append('tipo',tipoArchivo)
         const nuevosDatos = await axios.post(`${URL}/contabilidad/sat`, f, {withCredentials: true});
         setDataContabilidad([...dataContabilidad, ...transformarDatos(nuevosDatos.data.data)])
         CancelarArchivoSAT(false);
@@ -244,7 +250,15 @@ const Contabilidad = () => {
                 <Modal.Body>
 
                     <form onSubmit={onSubmitHandlerDocumento}>
-                        <label>Nombre del documento:</label>
+
+                        <label>Tipo de Documento:</label>
+                        <select style={styles.input} name="tipo"  onChange={(e) => onChangeTipoArchivo(e)} required>
+                            <option value="emitida" selected="selected">Facturas Emitidas</option>
+                            <option value="recibida">Facturas Recibidas</option>
+                            <option value="impuestos">ISR & IVA</option>
+                            <option value="social">IMSS - Infonavit</option>
+
+                        </select>
 
                         <input type="file" name="file" style={{ width: '100%', marginTop: '20px' }} onChange={(e) => changeFile(e.target.files)} accept="application/pdf" required />
 

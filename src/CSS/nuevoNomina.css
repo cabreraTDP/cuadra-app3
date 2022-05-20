@@ -10,7 +10,7 @@
 }
 #informacion{
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto auto auto;
     padding: 15px;
     width: 100%;
 
@@ -98,5 +98,26 @@
     border-radius: 10px;
     border: 2px solid gray;
     font-size: 17px;
+    cursor: pointer;
+}
+
+#buttonExportar{
+    padding: 12px;
+    background-color: #287233; 
+    color: white;
+    font-size: 16px;
+    border: none; 
+    border-radius:10px; 
+    font-weight: 'bold';
+}
+
+#buttonExportar:hover{
+    padding: 12px;
+    background-color: rgba(40,114,51,0.5); 
+    color: black;
+    font-size: 16px;
+    border: none; 
+    border-radius: 10px; 
+    font-weight: 'bold';
     cursor: pointer;
 }

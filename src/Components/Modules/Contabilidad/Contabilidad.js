@@ -250,7 +250,7 @@ const Contabilidad = () => {
                             <option value="1">Facturas Emitidas</option>
                             <option value="2">Facturas Recibidas</option>
                             <option value="3">Impuestos</option>
-                            <option value="4">IMSS</option>
+                            <option value="social">IMSS</option>
                         </select>
 
                         <input type="file" name="file" style={{ width: '100%', marginTop: '20px' }} onChange={(e) => changeFile(e.target.files)} accept="application/pdf" required />

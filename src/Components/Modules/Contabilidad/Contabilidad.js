@@ -10,6 +10,7 @@ import {numberToCurrency} from '../../../utils/format';
 import moment from 'moment';
 
 import ExportExcel from "react-export-excel";
+import { Link } from 'react-router-dom';
 
 const ExcelFile = ExportExcel.ExcelFile;
 const ExcelSheet = ExportExcel.ExcelSheet;
@@ -212,11 +213,13 @@ const Contabilidad = () => {
                             Subir pdf sat
                         </div>
                     </div>
-                    <div id='opcion'>
+                    <div id='opcion' >
+                    <Link to="analisis" style={{textDecoration:'none', color:'black'}}>
                         <Icon name="activity" strokeWidth="3" size="25" color="blue" />
                         <div>
-                            Analisis
+                            Análisis
                         </div>
+                    </Link>
                     </div>
                     <div id='opcion'>
                         <ExportarExcel datos={dataFiltered}/>

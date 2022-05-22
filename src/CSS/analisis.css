@@ -16,6 +16,7 @@
 }
 #linea{
     border-right: solid 2px black;
+
 }
 
 
@@ -31,7 +32,9 @@
 #utilidad {
     border: 2px solid blue; 
     border-radius: 20px;
-    text-align: end;
+    text-align: center;
+    text-decoration: underline;
+    font-weight: bold;
     line-height: 80px;
     font-size: 25px;
 }

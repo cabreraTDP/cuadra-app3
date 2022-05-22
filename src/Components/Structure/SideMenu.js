@@ -30,9 +30,6 @@ const SideMenu = () => {
                                 <td><Link to="nominas"><Icon name="briefcase" strokeWidth="3" size="25" />Nominas</Link></td>
                             </tr>
                             <tr>
-                                <td><Link to=""><Icon name="users" strokeWidth="3" size="25" />IMSS</Link></td>
-                            </tr>
-                            <tr>
                                 <td><Link to="contabilidad"><Icon name="check" strokeWidth="3" size="25" />Contabilidad</Link></td>
                             </tr>
                         </tbody>
@@ -46,9 +43,6 @@ const SideMenu = () => {
                             </tr>
                             <tr>
                                 <td><Icon name="briefcase" stroke="#0977F8" strokeWidth="3" size="25" /></td>
-                            </tr>
-                            <tr>
-                                <td><Icon name="users" stroke="#0977F8" strokeWidth="3" size="25" /></td>
                             </tr>
                             <tr>
                                 <td><Icon name="check" stroke="#0977F8" strokeWidth="3" size="25" /></td>

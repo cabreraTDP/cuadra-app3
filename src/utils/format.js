@@ -4,4 +4,8 @@ const numberToCurrency = (number) => {
         currency: 'USD'}).format(number)
 };
 
-module.exports = {numberToCurrency}
+const currencyToNumber = (value) => {
+    return Number(value.replace(/[^0-9.-]+/g,""))
+}
+
+module.exports = {numberToCurrency, currencyToNumber}

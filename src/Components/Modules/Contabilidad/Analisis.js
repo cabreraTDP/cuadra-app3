@@ -1,4 +1,6 @@
 import '../../../CSS/analisis.css'
+import Icon from "awesome-react-icons";
+
 
 const Analisis = () => {
 
@@ -11,8 +13,8 @@ const Analisis = () => {
                 integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
                 crossOrigin="anonymous"
             />
-            <h1>Analisis financiero</h1>
-            <div style={{ width: '500px' }}>
+            <h1 style={{paddingBottom:'30px'}}>Analisis financiero</h1>
+            <div style={{ width: '500px', paddingBottom:'40px' }}>
                 <div id='fecha'>
                     <h5 >
                         Del: 13 de marzo del 2012
@@ -23,120 +25,146 @@ const Analisis = () => {
                 </div>
             </div>
             <div id='contenido'>
-                <div >
+                <div id='separador' style={{ borderRight: 'solid 2px black'}}>
                     <table id='tabla'>
                         <tr >
-                            <td rowSpan={2} id='tabla' style={{width:'80px'}}>
-                                Icono
+                            <td rowSpan={2} style={{ width: '150px' }}>
+                                <div id='icono-ingreso' >
+
+                                </div>
                             </td>
-                            <td id='tabla'>
+                            <td style={{ textAlign: 'left' }}>
                                 <h5>Ingresos</h5>
                             </td>
-
                         </tr>
 
                         <tr>
-                            <td id='tabla'>
-
-                            </td>
-
-
-                            <td id='tabla'>
+                            <td style={{ textAlign: 'right' }}>
                                 <h6>$305,238.20</h6>
                             </td>
+                        </tr>
 
+                        <tr>
+                            <td >
+                                <div style={{ width: '100%', height: '30px' }}>
+
+                                </div>
+                            </td>
+                            <td ><div style={{ width: '100%', height: '30px' }}>
+
+                            </div>
+                            </td>
                         </tr>
                         <tr>
-                            <td id="tabla" >
+                            <td >
                                 Pagos de Clientes
                             </td>
-                            <td id='tabla' colSpan={2} >
+                            <td style={{ textAlign: 'right' }}>
                                 $304,214.20
                             </td>
 
                         </tr>
                         <tr>
-                            <td id="tabla">
+                            <td >
                                 Intereses Financieros
                             </td>
-                            <td id='tabla' colSpan={2}>
+                            <td style={{ textAlign: 'right' }}>
                                 $1,024.00
                             </td>
 
                         </tr>
                     </table>
                 </div>
-                <div>
+                <div id='separador' style={{ borderRight: 'solid 2px black'}}>
                     <table id='tabla'>
                         <tr >
-                            <td rowSpan={2} id='tabla'>
-                                Icono
+                            <td rowSpan={2} style={{ width: '150px' }}>
+                                <div id='icono-gasto' >
+
+                                </div>
                             </td>
-                            <td id='tabla'>
+                            <td style={{ textAlign: 'left' }}>
                                 <h5>Gastos</h5>
                             </td>
 
                         </tr>
 
                         <tr>
-                            <td id='tabla'>
+                            <td >
 
                             </td>
-                            <td id='tabla'>
+                            <td style={{ textAlign: 'right' }}>
                                 <h6>$272,621.19</h6>
                             </td>
 
                         </tr>
                         <tr>
-                            <td id="tabla" >
+                            <td >
+                                <div style={{ width: '100%', height: '30px' }}>
+
+                                </div>
+                            </td>
+                            <td ><div style={{ width: '100%', height: '30px' }}>
+
+                            </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  >
                                 Sueldos
                             </td>
-                            <td id='tabla' colSpan={2} >
+                            <td colSpan={2} style={{ textAlign: 'right' }}>
                                 $91,137.22
                             </td>
 
                         </tr>
                         <tr>
-                            <td id="tabla">
+                            <td >
                                 Impuestos
                             </td>
-                            <td id='tabla' colSpan={2}>
+                            <td colSpan={2} style={{ textAlign: 'right' }}>
                                 $6,037.14
                             </td>
 
                         </tr>
                         <tr>
-                            <td id="tabla">
+                            <td >
                                 Operativo
                             </td>
-                            <td id='tabla' colSpan={2}>
+                            <td colSpan={2} style={{ textAlign: 'right' }}>
                                 $175,446.83
                             </td>
 
                         </tr>
                     </table>
                 </div>
-                <div >
+                <div id='separador'>
                     <table id='tabla'>
                         <tr >
-                            <td rowSpan={2} id='tabla' >
-                                Icono
+                            <td rowSpan={2}>
+                                <div id='icono-utilidad' >
+
+                                </div>
                             </td>
-                            <td id='tabla'>
+                            <td style={{ textAlign: 'left' }}>
                                 <h5>Utilidad</h5>
                             </td>
 
                         </tr>
 
                         <tr>
+                            <td >
+                                <div style={{ width: '100%', height: '30px' }}>
 
+                                </div>
+                            </td>
                         </tr>
                         <tr>
-                            <td colSpan={2}>
+                            <td colSpan={2} style={{paddingTop:'40px'}}>
                                 <div id='utilidad'>
-                                    
-                                        $32,617.01
-                                    
+
+                                    $32,617.01
+
                                 </div>
                             </td>
                         </tr>

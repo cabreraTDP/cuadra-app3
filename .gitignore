@@ -25,3 +25,4 @@ yarn-error.log*
 package-lock.json
 package.json
 .env
+src/Components/Modules/Contabilidad/Conta.js
